@@ -1,2 +1,4 @@
 Cooles Tutorial für Java mit der Leapmotion:
 https://www.youtube.com/watch?v=oHsDkNLipWE&index=1&list=PLgTGpidiW0iQGk-zYzmcDw6XtEMYh69j4
+Java-FX Tutorial
+https://www.youtube.com/watch?v=FLkOX4Eez6o&list=PL6gx4Cwl9DGBzfXLWLSYVy8EbTdpGbUIG
