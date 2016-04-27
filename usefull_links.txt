@@ -8,3 +8,5 @@ weiteres Java-FX Tutorial
 https://www.youtube.com/watch?v=fWwaWCkh9Ig&list=PLNIWFrcmR15Jdevz2v30YipAJq0hnh2xM
 Multitouch + Leapmotion
 https://www.youtube.com/watch?v=sVyJkTUKb-Y
+Gesture learning
+https://developer.leapmotion.com/libraries?tag=gestures
