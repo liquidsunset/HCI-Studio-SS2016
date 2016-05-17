@@ -1,3 +1,5 @@
+package leapmotion;
+
 import java.io.IOException;
 
 import com.leapmotion.leap.*;

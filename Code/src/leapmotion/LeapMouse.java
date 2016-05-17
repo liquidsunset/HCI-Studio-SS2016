@@ -1,3 +1,5 @@
+package leapmotion;
+
 import com.leapmotion.leap.*;
 import com.leapmotion.leap.Gesture.State;
 import com.leapmotion.leap.Gesture.Type;
