@@ -1,4 +1,5 @@
 import com.leapmotion.leap.*;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -17,13 +18,33 @@ class LeapListener extends Listener {
     private ObjectProperty<CircleGesture> circleGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<SwipeGesture> swipeGestureProperty = new SimpleObjectProperty<>();
 
-    ObservableValue<Integer> indexFingerElementProperty(){ return indexFingerElement; }
-    ObservableValue<Vector> zoomProperty(){ return zoomVector; }
-    ObservableValue<Boolean> isInEditmode(){ return editMode; }
-    ObservableValue<KeyTapGesture> keyTapGestureValue(){ return keyTapGestureProperty; }
-    ObservableValue<ScreenTapGesture> screenTapGestureValue(){ return screenTapGestureProperty; }
-    ObservableValue<CircleGesture> circleGestureValue(){ return circleGestureProperty; }
-    ObservableValue<SwipeGesture> swipeGestureValue(){ return swipeGestureProperty; }
+    ObservableValue<Integer> indexFingerElementProperty() {
+        return indexFingerElement;
+    }
+
+    ObservableValue<Vector> zoomProperty() {
+        return zoomVector;
+    }
+
+    ObservableValue<Boolean> isInEditmode() {
+        return editMode;
+    }
+
+    ObservableValue<KeyTapGesture> keyTapGestureValue() {
+        return keyTapGestureProperty;
+    }
+
+    ObservableValue<ScreenTapGesture> screenTapGestureValue() {
+        return screenTapGestureProperty;
+    }
+
+    ObservableValue<CircleGesture> circleGestureValue() {
+        return circleGestureProperty;
+    }
+
+    ObservableValue<SwipeGesture> swipeGestureValue() {
+        return swipeGestureProperty;
+    }
 
     @Override
     public void onConnect(Controller controller) {
@@ -37,10 +58,10 @@ class LeapListener extends Listener {
         Frame frame = controller.frame();
         if (!frame.hands().isEmpty()) {
             Screen screen = controller.locatedScreens().get(0);
-            if (screen != null && screen.isValid()){
+            if (screen != null && screen.isValid()) {
                 Hand hand = frame.hands().rightmost();
 
-                if(hand.isValid()) {
+                if (hand.isValid()) {
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
 
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
@@ -80,16 +101,15 @@ class LeapListener extends Listener {
         }
     }
 
-    void toggleEditMode(){
-        if(editMode.getValue())
+    void toggleEditMode() {
+        if (editMode.getValue())
             editMode.setValue(false);
         else
             editMode.setValue(true);
     }
 
-    private int getElementFromIndexFingerAngel(Vector indexFingerVector){
+    private int getElementFromIndexFingerAngel(Vector indexFingerVector) {
         double angel = LeapCalcFunctions.calcAngelBetweenVectorsInDegrees(indexFingerVector, Vector.xAxis());
-
         return LeapCalcFunctions.getRectangleFromAngel(angel);
     }
 }

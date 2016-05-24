@@ -14,7 +14,7 @@ final class LeapCalcFunctions {
 
     static int getRectangleFromAngel(double angelToXAxis) {
         double[] angels;
-        switch (LeapFXConstant.COUNT_ELEMENTS){
+        switch (LeapFXConstant.COUNT_ELEMENTS) {
             case 3:
                 angels = LeapFXConstant.ANGELS_THREE_ELEMENTS;
                 break;
@@ -28,7 +28,7 @@ final class LeapCalcFunctions {
                 return -1;
         }
         for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
-            if (isBetween(angels[i], angels[i + 1], angelToXAxis)){
+            if (isBetween(angels[i], angels[i + 1], angelToXAxis)) {
                 return i;
             }
         }
