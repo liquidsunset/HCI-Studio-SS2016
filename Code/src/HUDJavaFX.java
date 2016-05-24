@@ -22,7 +22,8 @@ public class HUDJavaFX extends Application {
     private Circle circle=new Circle(50, Color.DEEPSKYBLUE);
 
     private boolean editMode;
-    private int selectedElement;
+    private Integer selectedElement;
+    private Integer actualElement;
     private Rectangle[] elements = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
     Group rectangles;
@@ -103,8 +104,9 @@ public class HUDJavaFX extends Application {
                 if(oldValue == newValue){
                     return;
                 } else {
+                    actualElement = newValue;
                     highlightElement(newValue);
-                    resetHighlightedElement(oldValue);
+                    resetElement(oldValue);
                 }
             });
         });
@@ -131,8 +133,7 @@ public class HUDJavaFX extends Application {
         listener.keyTapGestureValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(editMode) {
-                    selectedElement = LeapCalcFunctions.getRectangleFromAngel(listener.indexFingerElementProperty()
-                            .getValue());
+
                     if (selectedElement == -1)
                         listener.toggleEditMode();
                 }
@@ -141,6 +142,12 @@ public class HUDJavaFX extends Application {
 
         listener.screenTapGestureValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
+                if (!editMode){
+                    selectedElement = actualElement;
+                    selectElement(actualElement);
+                } else {
+                    resetElement(selectedElement);
+                }
 
             });
         });
@@ -188,14 +195,21 @@ public class HUDJavaFX extends Application {
     private void highlightElement(Integer elem){
         if(elem != null && elem < LeapFXConstant.COUNT_ELEMENTS){
             Rectangle rec = elements[elem];
-            rec.setFill(Color.LIGHTGRAY);
+            rec.setFill(Color.LIGHTYELLOW);
         }
     }
 
-    private void resetHighlightedElement(Integer elem){
+    private void resetElement(Integer elem){
         if(elem != null && elem < LeapFXConstant.COUNT_ELEMENTS){
             Rectangle rec = elements[elem];
             rec.setFill(Color.WHITE);
+        }
+    }
+
+    private void selectElement(Integer elem){
+        if(editMode){
+            Rectangle rec = elements[elem];
+            rec.setFill(Color.LIGHTGREEN);
         }
     }
 
