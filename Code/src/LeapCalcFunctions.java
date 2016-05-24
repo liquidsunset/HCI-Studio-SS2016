@@ -5,24 +5,24 @@ import java.math.BigDecimal;
 /**
  * Created by liquidsunset on 18.05.16.
  */
-public final class LeapCalcFunctions {
+final class LeapCalcFunctions {
 
-    public static double calcAngelBetweenVectorsInDegrees(Vector v1, Vector v2) {
+    static double calcAngelBetweenVectorsInDegrees(Vector v1, Vector v2) {
         BigDecimal angle = new BigDecimal(Math.toDegrees(v1.angleTo(v2)));
         return angle.setScale(LeapFXConstant.DOUBLE_ROUND_DECIMAL, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    public static int getRectangleFromAngel(double angelToXAxis) {
+    static int getRectangleFromAngel(double angelToXAxis) {
         double[] angels;
         switch (LeapFXConstant.COUNT_ELEMENTS){
             case 3:
-                angels = LeapFXConstant.angelForThreeElements;
+                angels = LeapFXConstant.ANGELS_THREE_ELEMENTS;
                 break;
             case 4:
-                angels = LeapFXConstant.angelForFourElements;
+                angels = LeapFXConstant.ANGELS_FOUR_ELEMENTS;
                 break;
             case 5:
-                angels = LeapFXConstant.angelForFiveElements;
+                angels = LeapFXConstant.ANGELS_FIVE_ELEMENTS;
                 break;
             default:
                 return -1;

@@ -2,7 +2,6 @@ import com.leapmotion.leap.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Point2D;
 
 /**
  * Created by liquidsunset on 18.05.16.
@@ -10,7 +9,6 @@ import javafx.geometry.Point2D;
 
 class LeapListener extends Listener {
 
-    private ObjectProperty<Point2D> point = new SimpleObjectProperty<>();
     private ObjectProperty<Integer> indexFingerElement = new SimpleObjectProperty<>();
     private ObjectProperty<Vector> zoomVector = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> editMode = new SimpleObjectProperty<>();
@@ -19,8 +17,6 @@ class LeapListener extends Listener {
     private ObjectProperty<CircleGesture> circleGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<SwipeGesture> swipeGestureProperty = new SimpleObjectProperty<>();
 
-
-    ObservableValue<Point2D> pointProperty(){ return point; }
     ObservableValue<Integer> indexFingerElementProperty(){ return indexFingerElement; }
     ObservableValue<Vector> zoomProperty(){ return zoomVector; }
     ObservableValue<Boolean> isInEditmode(){ return editMode; }
@@ -45,9 +41,6 @@ class LeapListener extends Listener {
                 Hand hand = frame.hands().rightmost();
 
                 if(hand.isValid()) {
-                    Vector intersect = screen.intersect(hand.palmPosition(), hand.direction(), true);
-                    point.setValue(new Point2D(screen.widthPixels() * Math.min(1d, Math.max(0d, intersect.getX())),
-                            screen.heightPixels() * Math.min(1d, Math.max(0d, (1d - intersect.getY())))));
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
 
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
@@ -58,10 +51,11 @@ class LeapListener extends Listener {
                             case TYPE_KEY_TAP:
                                 System.out.println("key tap");
                                 keyTapGestureProperty.setValue(new KeyTapGesture(gesture));
-                                toggleEditMode();
+
                                 break;
                             case TYPE_SCREEN_TAP:
                                 System.out.println("screen tap");
+                                toggleEditMode();
                                 screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
                                 break;
                             case TYPE_CIRCLE:

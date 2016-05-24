@@ -26,7 +26,7 @@ public class HUDJavaFX extends Application {
     private Integer actualElement;
     private Rectangle[] elements = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
-    Group rectangles;
+    private Group rectangles;
 
     //Initialization of the elements and layout
     @Override
@@ -64,7 +64,7 @@ public class HUDJavaFX extends Application {
         //other things to init
         editMode = false;
 
-        //initRec
+        //initScene
         rectangles = new Group();
         scene = new Scene(rectangles, LeapFXConstant.ELEMENT_WIDTH * LeapFXConstant.COUNT_ELEMENTS,
                 LeapFXConstant.ELEMENT_HEIGHT);
@@ -81,29 +81,11 @@ public class HUDJavaFX extends Application {
 
         primaryStage.setScene(scene);
 
-
-
-
-        listener.pointProperty().addListener((ov, t, t1) -> {
-            Platform.runLater(() -> {
-                /*Point2D d=root.sceneToLocal(t1.getX()-scene.getX()-scene.getWindow().getX(),
-                        t1.getY()-scene.getY()-scene.getWindow().getY());
-                double dx=d.getX(), dy=d.getY();
-                if(dx>=0d && dx<=root.getWidth()-2d*circle.getRadius() &&
-                        dy>=0d && dy<=root.getHeight()-2d*circle.getRadius()){
-                    circle.setTranslateX(dx);
-                    circle.setTranslateY(dy);
-                }*/
-            });
-        });
-
         listener.indexFingerElementProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(editMode)
                     return;
-                if(oldValue == newValue){
-                    return;
-                } else {
+                if(!oldValue.equals(newValue)){
                     actualElement = newValue;
                     highlightElement(newValue);
                     resetElement(oldValue);
@@ -186,10 +168,6 @@ public class HUDJavaFX extends Application {
 
         }
         rectangles.getChildren().addAll(elements);
-    }
-
-    private void switchElements(){
-
     }
 
     private void highlightElement(Integer elem){
