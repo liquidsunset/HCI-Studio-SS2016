@@ -6,7 +6,7 @@ class LeapFXConstant {
     static final int COUNT_ELEMENTS = 3;
     static final double ELEMENT_WIDTH = 250.0;
     static final double ELEMENT_HEIGHT = 200.0;
-    static final int TIME_OUT_IN_MS = 4000;
+    static final long TIME_OUT_IN_MS = 3000;
     static final int DOUBLE_ROUND_DECIMAL = 2;
     static final double[] ANGELS_THREE_ELEMENTS = {180.0, 100.0, 80.0, 0.0};
     static final double[] ANGELS_FOUR_ELEMENTS = {180.0, 105.0, 95.0, 85.0, 0.0};

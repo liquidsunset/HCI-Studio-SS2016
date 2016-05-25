@@ -17,7 +17,8 @@ class LeapListener extends Listener {
     private ObjectProperty<ScreenTapGesture> screenTapGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<CircleGesture> circleGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<SwipeGesture> swipeGestureProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<Hand> validHand = new SimpleObjectProperty<>();
+    private ObjectProperty<Hand> validHandProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Boolean> resetAllProperty = new SimpleObjectProperty<>();
 
     ObservableValue<Integer> indexFingerElementProperty() {
         return indexFingerElement;
@@ -48,13 +49,20 @@ class LeapListener extends Listener {
     }
 
     ObservableValue<Hand> handValue() {
-        return validHand;
+        return validHandProperty;
     }
+
+    ObservableValue<Boolean> resetAllValue() {
+        return resetAllProperty;
+    }
+
+    private long startTime;
 
     @Override
     public void onConnect(Controller controller) {
         super.onConnect(controller);
         editMode.setValue(false);
+        resetAllProperty.setValue(false);
     }
 
     @Override
@@ -66,10 +74,11 @@ class LeapListener extends Listener {
         if (screen != null && screen.isValid()) {
             if (!frame.hands().isEmpty()) {
                 Hand hand = frame.hands().rightmost();
-
+                resetAllProperty.setValue(false);
+                startTime = System.currentTimeMillis();
                 if (hand.isValid()) {
 
-                    validHand.setValue(hand);
+                    validHandProperty.setValue(hand);
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
 
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
@@ -109,12 +118,17 @@ class LeapListener extends Listener {
                     for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
                         HUDJavaFX.resetElement(i);
                     }
+                } else if (editMode.getValue()) {
+                    long handsFreeTime = System.currentTimeMillis() - startTime;
+                    if (handsFreeTime > LeapFXConstant.TIME_OUT_IN_MS) {
+                        resetAllProperty.setValue(true);
+                    }
                 }
             }
         }
     }
 
-    void toggleEditMode() {
+    private void toggleEditMode() {
         if (editMode.getValue())
             editMode.setValue(false);
         else

@@ -53,9 +53,9 @@ public class HUDJavaFX extends Application {
         leapController.enableGesture(Gesture.Type.TYPE_KEY_TAP);
 
         //screenTap config
-        leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 40.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 50.0f);
         leapController.config().setFloat("Gesture.ScreenTap.HistorySeconds", 0.15f);
-        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 5.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 4.0f);
         leapController.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 
         //save leap config
@@ -132,6 +132,18 @@ public class HUDJavaFX extends Application {
         listener.swipeGestureValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
 
+            });
+        });
+        listener.resetAllValue().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (newValue) {
+                    actualElement = -1;
+                    selectedElement = -1;
+                    editMode = false;
+                    for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
+                        resetElement(i);
+                    }
+                }
             });
         });
 
