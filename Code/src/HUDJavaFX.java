@@ -5,9 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -19,13 +17,10 @@ public class HUDJavaFX extends Application {
     private LeapListener listener = new LeapListener();
     private Controller leapController = new Controller();
 
-    private AnchorPane root = new AnchorPane();
-    private Circle circle = new Circle(50, Color.DEEPSKYBLUE);
-
     private boolean editMode;
     private Integer selectedElement;
     private Integer actualElement;
-    private Rectangle[] elements = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
+    private static final Rectangle[] elements = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
     private Group rectangles;
 
@@ -80,10 +75,6 @@ public class HUDJavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         leapController.addListener(listener);
 
-        circle.setLayoutX(circle.getRadius());
-        circle.setLayoutY(circle.getRadius());
-        root.getChildren().add(circle);
-
         primaryStage.setScene(scene);
 
         listener.indexFingerElementProperty().addListener((observable, oldValue, newValue) -> {
@@ -119,17 +110,16 @@ public class HUDJavaFX extends Application {
 
         listener.keyTapGestureValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                if (editMode) {
-
-                    if (selectedElement == -1)
+                /*if (editMode) {
+                    if (selectedElement != null && selectedElement == -1)
                         listener.toggleEditMode();
-                }
+                }*/
             });
         });
 
         listener.screenTapGestureValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                if (!editMode) {
+                if (editMode) {
                     selectedElement = actualElement;
                     selectElement(actualElement);
                 } else {
@@ -153,14 +143,20 @@ public class HUDJavaFX extends Application {
         if (posOld < LeapFXConstant.COUNT_ELEMENTS && posNew < LeapFXConstant.COUNT_ELEMENTS) {
             Rectangle oldRec = elements[posOld];
             double marginXOld = oldRec.getX();
-            double marginYOld = oldRec.getY();
 
             Rectangle newRec = elements[posNew];
+            double marginXNew = newRec.getX();
+
+            oldRec.setX(marginXNew);
+            newRec.setX(marginXOld);
+
+
+            resetElement(posOld);
+            selectElement(posNew);
 
             elements[posOld] = elements[posNew];
             elements[posNew] = oldRec;
         }
-
     }
 
     private void initElements() {
@@ -176,13 +172,13 @@ public class HUDJavaFX extends Application {
     }
 
     private void highlightElement(Integer elem) {
-        if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS) {
+        if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS && !elem.equals(selectedElement)) {
             Rectangle rec = elements[elem];
             rec.setFill(Color.LIGHTYELLOW);
         }
     }
 
-    private void resetElement(Integer elem) {
+    static void resetElement(Integer elem) {
         if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS) {
             Rectangle rec = elements[elem];
             rec.setFill(Color.WHITE);

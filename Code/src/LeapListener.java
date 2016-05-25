@@ -17,6 +17,7 @@ class LeapListener extends Listener {
     private ObjectProperty<ScreenTapGesture> screenTapGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<CircleGesture> circleGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<SwipeGesture> swipeGestureProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Hand> validHand = new SimpleObjectProperty<>();
 
     ObservableValue<Integer> indexFingerElementProperty() {
         return indexFingerElement;
@@ -46,6 +47,10 @@ class LeapListener extends Listener {
         return swipeGestureProperty;
     }
 
+    ObservableValue<Hand> handValue() {
+        return validHand;
+    }
+
     @Override
     public void onConnect(Controller controller) {
         super.onConnect(controller);
@@ -56,12 +61,15 @@ class LeapListener extends Listener {
     public void onFrame(Controller controller) {
         super.onFrame(controller);
         Frame frame = controller.frame();
-        if (!frame.hands().isEmpty()) {
-            Screen screen = controller.locatedScreens().get(0);
-            if (screen != null && screen.isValid()) {
+
+        Screen screen = controller.locatedScreens().get(0);
+        if (screen != null && screen.isValid()) {
+            if (!frame.hands().isEmpty()) {
                 Hand hand = frame.hands().rightmost();
 
                 if (hand.isValid()) {
+
+                    validHand.setValue(hand);
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
 
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
@@ -72,7 +80,6 @@ class LeapListener extends Listener {
                             case TYPE_KEY_TAP:
                                 System.out.println("key tap");
                                 keyTapGestureProperty.setValue(new KeyTapGesture(gesture));
-
                                 break;
                             case TYPE_SCREEN_TAP:
                                 System.out.println("screen tap");
@@ -95,6 +102,12 @@ class LeapListener extends Listener {
                                 swipeGestureProperty.setValue(new SwipeGesture(gesture));
                                 break;
                         }
+                    }
+                }
+            } else {
+                if (!editMode.getValue()) {
+                    for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
+                        HUDJavaFX.resetElement(i);
                     }
                 }
             }
