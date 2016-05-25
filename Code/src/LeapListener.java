@@ -72,7 +72,7 @@ class LeapListener extends Listener {
                 resetAllProperty.setValue(false);
                 startTime = System.currentTimeMillis();
                 if (hand.isValid()) {
-                    
+
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
 
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
@@ -115,6 +115,7 @@ class LeapListener extends Listener {
                 } else if (editMode.getValue()) {
                     long handsFreeTime = System.currentTimeMillis() - startTime;
                     if (handsFreeTime > LeapFXConstant.TIME_OUT_IN_MS) {
+                        editMode.setValue(false);
                         resetAllProperty.setValue(true);
                     }
                 }

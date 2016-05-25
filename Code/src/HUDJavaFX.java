@@ -79,8 +79,11 @@ public class HUDJavaFX extends Application {
 
         listener.indexFingerElementProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                if (editMode)
+                if (editMode) {
+                    System.out.println("in edit mode");
                     return;
+                }
+
                 if (!newValue.equals(oldValue)) {
                     actualElement = newValue;
                     highlightElement(newValue);
@@ -124,8 +127,8 @@ public class HUDJavaFX extends Application {
                     selectElement(actualElement);
                 } else {
                     resetElement(selectedElement);
+                    selectedElement = null;
                 }
-
             });
         });
 
@@ -136,10 +139,9 @@ public class HUDJavaFX extends Application {
         });
         listener.resetAllValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
+                System.out.println("reset all");
                 if (newValue) {
-                    actualElement = -1;
-                    selectedElement = -1;
-                    editMode = false;
+                    selectedElement = null;
                     for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
                         resetElement(i);
                     }
