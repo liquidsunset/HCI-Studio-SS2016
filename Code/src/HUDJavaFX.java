@@ -137,9 +137,8 @@ public class HUDJavaFX extends Application {
         listener.resetAllValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if (newValue) {
-                    actualElement = -1;
-                    selectedElement = -1;
-                    editMode = false;
+                    actualElement = null;
+                    selectedElement = null;
                     for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
                         resetElement(i);
                     }
