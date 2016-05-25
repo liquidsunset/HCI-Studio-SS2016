@@ -17,7 +17,6 @@ class LeapListener extends Listener {
     private ObjectProperty<ScreenTapGesture> screenTapGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<CircleGesture> circleGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<SwipeGesture> swipeGestureProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<Hand> validHandProperty = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> resetAllProperty = new SimpleObjectProperty<>();
 
     ObservableValue<Integer> indexFingerElementProperty() {
@@ -48,10 +47,6 @@ class LeapListener extends Listener {
         return swipeGestureProperty;
     }
 
-    ObservableValue<Hand> handValue() {
-        return validHandProperty;
-    }
-
     ObservableValue<Boolean> resetAllValue() {
         return resetAllProperty;
     }
@@ -77,8 +72,7 @@ class LeapListener extends Listener {
                 resetAllProperty.setValue(false);
                 startTime = System.currentTimeMillis();
                 if (hand.isValid()) {
-
-                    validHandProperty.setValue(hand);
+                    
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
 
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
