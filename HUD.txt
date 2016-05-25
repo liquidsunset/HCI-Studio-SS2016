@@ -1,0 +1,17 @@
+Customizing HUD and its control with a Leap Motion
+
+Abstract:
+
+In todays cars, the design of a Head Up Display (HUD) and the arrangement of its components are rather fixed. In a world where everyone
+wants to be able to customize everything according to their needs, this paper shows our ideas on how to implement a HUD
+for cars which can be modifyed using simple gestures. The paper also provides approaches how a Leap Motion can be used
+to recognize gestures in order to control the HUD. Furthermore, user experiences, possible risks and problems we faces
+in the implementation will be described within this paper.
+
+Introduction:
+
+Automotive UI - a very interesting topic. But still, finding an idea which has never been considered before is very hard.
+Therefore, we thought about existing UIs in cars and how we can change the interaction with the user. In particular, this
+paper describes an approach on how a dynamic HUD can be designed and how its control can be realized with the help of a
+Leap Motion. The control will be handled by gestures only, so no touchpad or any other device than the Leap Motion is
+needed to modify the HUD.
