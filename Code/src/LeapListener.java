@@ -11,23 +11,16 @@ import javafx.beans.value.ObservableValue;
 class LeapListener extends Listener {
 
     private ObjectProperty<Integer> indexFingerElement = new SimpleObjectProperty<>();
-    private ObjectProperty<Vector> zoomVector = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> editMode = new SimpleObjectProperty<>();
     private ObjectProperty<KeyTapGesture> keyTapGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<ScreenTapGesture> screenTapGestureProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<CircleGesture> circleGestureProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<SwipeGesture> swipeGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> resetAllProperty = new SimpleObjectProperty<>();
 
     ObservableValue<Integer> indexFingerElementProperty() {
         return indexFingerElement;
     }
 
-    ObservableValue<Vector> zoomProperty() {
-        return zoomVector;
-    }
-
-    ObservableValue<Boolean> isInEditmode() {
+    ObservableValue<Boolean> isInEditMode() {
         return editMode;
     }
 
@@ -37,14 +30,6 @@ class LeapListener extends Listener {
 
     ObservableValue<ScreenTapGesture> screenTapGestureValue() {
         return screenTapGestureProperty;
-    }
-
-    ObservableValue<CircleGesture> circleGestureValue() {
-        return circleGestureProperty;
-    }
-
-    ObservableValue<SwipeGesture> swipeGestureValue() {
-        return swipeGestureProperty;
     }
 
     ObservableValue<Boolean> resetAllValue() {
@@ -71,10 +56,10 @@ class LeapListener extends Listener {
                 Hand hand = frame.hands().rightmost();
                 resetAllProperty.setValue(false);
                 startTime = System.currentTimeMillis();
+
                 if (hand.isValid()) {
 
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
-
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
 
                     for (Gesture gesture : frame.gestures()) {
@@ -88,21 +73,6 @@ class LeapListener extends Listener {
                                 System.out.println("screen tap");
                                 toggleEditMode();
                                 screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
-                                break;
-                            case TYPE_CIRCLE:
-                                System.out.println("circle");
-                                circleGestureProperty.setValue(new CircleGesture(gesture));
-                                break;
-                            case TYPE_SWIPE:
-                                SwipeGesture swipe = new SwipeGesture(gesture);
-                                Vector swipeDirection = swipe.direction();
-                                System.out.println(swipeDirection.getX());
-                                if (swipeDirection.getX() < 0) {
-                                    System.out.println("left");
-                                } else if (swipeDirection.getX() >= 0) {
-                                    System.out.println("right");
-                                }
-                                swipeGestureProperty.setValue(new SwipeGesture(gesture));
                                 break;
                         }
                     }

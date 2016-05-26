@@ -3,7 +3,7 @@
  */
 class LeapFXConstant {
 
-    static final int COUNT_ELEMENTS = 3;
+    static final int COUNT_ELEMENTS = 5;
     static final double ELEMENT_WIDTH = 250.0;
     static final double ELEMENT_HEIGHT = 200.0;
     static final long TIME_OUT_IN_MS = 3000;

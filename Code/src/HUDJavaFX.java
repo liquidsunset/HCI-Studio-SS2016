@@ -92,22 +92,10 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.isInEditmode().addListener((observable, oldValue, newValue) -> {
+        listener.isInEditMode().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 this.editMode = newValue;
                 System.out.println(newValue);
-            });
-        });
-
-        listener.zoomProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-
-            });
-        });
-
-        listener.circleGestureValue().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-
             });
         });
 
@@ -132,11 +120,6 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.swipeGestureValue().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-
-            });
-        });
         listener.resetAllValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 System.out.println("reset all");
@@ -151,26 +134,6 @@ public class HUDJavaFX extends Application {
 
         primaryStage.show();
 
-    }
-
-    private void switchElements(Integer posOld, Integer posNew) {
-        if (posOld < LeapFXConstant.COUNT_ELEMENTS && posNew < LeapFXConstant.COUNT_ELEMENTS) {
-            Rectangle oldRec = elements[posOld];
-            double marginXOld = oldRec.getX();
-
-            Rectangle newRec = elements[posNew];
-            double marginXNew = newRec.getX();
-
-            oldRec.setX(marginXNew);
-            newRec.setX(marginXOld);
-
-
-            resetElement(posOld);
-            selectElement(posNew);
-
-            elements[posOld] = elements[posNew];
-            elements[posNew] = oldRec;
-        }
     }
 
     private void initElements() {
