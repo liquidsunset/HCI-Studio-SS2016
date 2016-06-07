@@ -27,16 +27,17 @@ final class LeapCalcFunctions {
             default:
                 return -1;
         }
+
         for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
             if (isBetween(angels[i], angels[i + 1], angelToXAxis)) {
                 return i;
             }
         }
+
         return -1;
     }
 
     private static boolean isBetween(double fromValue, double toValue, double value) {
         return toValue > fromValue ? value > fromValue && value <= toValue : value >= toValue && value < fromValue;
     }
-
 }

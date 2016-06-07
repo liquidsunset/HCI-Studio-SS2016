@@ -1,8 +1,12 @@
 import com.leapmotion.leap.*;
 
+import java.util.Objects;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Created by liquidsunset on 18.05.16.
@@ -12,9 +16,9 @@ class LeapListener extends Listener {
 
     private ObjectProperty<Integer> indexFingerElement = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> editMode = new SimpleObjectProperty<>();
-    private ObjectProperty<KeyTapGesture> keyTapGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<ScreenTapGesture> screenTapGestureProperty = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> resetAllProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Integer> elementIteratorProperty = new SimpleObjectProperty<>();
 
     ObservableValue<Integer> indexFingerElementProperty() {
         return indexFingerElement;
@@ -22,10 +26,6 @@ class LeapListener extends Listener {
 
     ObservableValue<Boolean> isInEditMode() {
         return editMode;
-    }
-
-    ObservableValue<KeyTapGesture> keyTapGestureValue() {
-        return keyTapGestureProperty;
     }
 
     ObservableValue<ScreenTapGesture> screenTapGestureValue() {
@@ -36,13 +36,23 @@ class LeapListener extends Listener {
         return resetAllProperty;
     }
 
+    ObservableValue<Integer> elememntIteratorValue() {
+        return elementIteratorProperty;
+    }
+
+
     private long startTime;
+    private Integer[] sequence;
+    private int sequenceCount;
 
     @Override
     public void onConnect(Controller controller) {
         super.onConnect(controller);
         editMode.setValue(false);
         resetAllProperty.setValue(false);
+        sequence = FileHandlingFunctions.getSequence();
+        sequenceCount = 0;
+        elementIteratorProperty.setValue(requireNonNull(sequence)[sequenceCount]);
     }
 
     @Override
@@ -54,6 +64,7 @@ class LeapListener extends Listener {
         if (screen != null && screen.isValid()) {
             if (!frame.hands().isEmpty()) {
                 Hand hand = frame.hands().rightmost();
+
                 resetAllProperty.setValue(false);
                 startTime = System.currentTimeMillis();
 
@@ -63,17 +74,9 @@ class LeapListener extends Listener {
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
 
                     for (Gesture gesture : frame.gestures()) {
-
-                        switch (gesture.type()) {
-                            case TYPE_KEY_TAP:
-                                System.out.println("key tap");
-                                keyTapGestureProperty.setValue(new KeyTapGesture(gesture));
-                                break;
-                            case TYPE_SCREEN_TAP:
-                                System.out.println("screen tap");
-                                toggleEditMode();
-                                screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
-                                break;
+                        if (Gesture.Type.TYPE_SCREEN_TAP.equals(gesture.type())) {
+                            toggleEditMode();
+                            screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
                         }
                     }
                 }

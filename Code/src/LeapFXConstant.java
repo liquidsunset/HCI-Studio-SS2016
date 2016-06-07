@@ -3,10 +3,15 @@
  */
 class LeapFXConstant {
 
+    static final boolean SHOW_SUBVIEW = false;
+    static final boolean OVERWRITE_SEQUENCE = true;
+    static final String FILE_SEQUENCE_NAME = "sequence.txt";
+    static final int FILE_SEQUENCE_LENGTH = 20;
+    static final int TEXT_SIZE = 50;
     static final int COUNT_ELEMENTS = 5;
-    static final double ELEMENT_WIDTH = 250.0;
-    static final double ELEMENT_HEIGHT = 200.0;
-    static final long TIME_OUT_IN_MS = 3000;
+    static final double HUD_WIDTH = 800;
+    static final double HUD_HEIGHT = 200.0;
+    static final long TIME_OUT_IN_MS = 500;
     static final int DOUBLE_ROUND_DECIMAL = 2;
     static final double[] ANGELS_THREE_ELEMENTS = {180.0, 100.0, 80.0, 0.0};
     static final double[] ANGELS_FOUR_ELEMENTS = {180.0, 105.0, 95.0, 85.0, 0.0};

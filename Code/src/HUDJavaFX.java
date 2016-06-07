@@ -5,9 +5,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Created by liquidsunset on 18.05.16.
@@ -18,13 +23,35 @@ public class HUDJavaFX extends Application {
     private Controller leapController = new Controller();
 
     private boolean editMode;
-    private Integer selectedElement;
+    private Integer highlightedElement;
     private Integer actualElement;
-    private static final Rectangle[] elements = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
+    private static final Rectangle[] rectangles = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
+    private static final Text[] rectangleText = new Text[LeapFXConstant.COUNT_ELEMENTS];
+    private static final Text sequenceText = new Text("0");
+    private static final StackPane[] elements = new StackPane[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
-    private Group rectangles;
+    private Group elementGroup;
+    private static Integer[] sequence;
 
     public static void main(String[] args) {
+
+        boolean createSequence;
+        if (args.length > 0) {
+            try {
+                createSequence = Boolean.parseBoolean(args[0]);
+            } catch (Exception e) {
+                createSequence = false;
+            }
+        } else {
+            createSequence = false;
+        }
+
+        if (createSequence) {
+            FileHandlingFunctions.createSequence(LeapFXConstant.FILE_SEQUENCE_LENGTH,
+                    LeapFXConstant.OVERWRITE_SEQUENCE);
+        }
+
+        sequence = FileHandlingFunctions.getSequence();
         launch();
     }
 
@@ -32,30 +59,11 @@ public class HUDJavaFX extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        /*
-        //swipe config
-        leapController.enableGesture(Gesture.Type.TYPE_SWIPE);
-        leapController.config().setFloat("Gesture.Swipe.MinLength", 60f);
-        leapController.config().setFloat("Gesture.Swipe.MinVelocity", 400f);
-        */
-
-        /*
-        // circle config
-        leapController.config().setFloat("Gesture.Circle.MinRadius", 9.0f);
-        leapController.config().setFloat("Gesture.Circle.MinArc", 5.0f);
-        leapController.enableGesture(Gesture.Type.TYPE_CIRCLE);
-        */
-
-        //keyTap config
-        leapController.config().setFloat("Gesture.KeyTap.MinDownVelocity", 60.0f);
-        leapController.config().setFloat("Gesture.KeyTap.HistorySeconds", 0.15f);
-        leapController.config().setFloat("Gesture.KeyTap.MinDistance", 10.0f);
-        leapController.enableGesture(Gesture.Type.TYPE_KEY_TAP);
 
         //screenTap config
         leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 50.0f);
         leapController.config().setFloat("Gesture.ScreenTap.HistorySeconds", 0.15f);
-        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 4.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 6.0f);
         leapController.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 
         //save leap config
@@ -65,17 +73,24 @@ public class HUDJavaFX extends Application {
         editMode = false;
 
         //initScene
-        rectangles = new Group();
-        scene = new Scene(rectangles, LeapFXConstant.ELEMENT_WIDTH * LeapFXConstant.COUNT_ELEMENTS,
-                LeapFXConstant.ELEMENT_HEIGHT);
-        initElements();
+        elementGroup = new Group();
+        scene = new Scene(elementGroup, LeapFXConstant.HUD_WIDTH * LeapFXConstant.COUNT_ELEMENTS,
+                LeapFXConstant.HUD_HEIGHT);
+        initPrimaryElements();
+
+        FileHandlingFunctions.createSequence(10, true);
+
+        sequence = FileHandlingFunctions.getSequence();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        leapController.addListener(listener);
 
+        leapController.addListener(listener);
         primaryStage.setScene(scene);
+
+        final Stage secondaryStage = new Stage(StageStyle.UTILITY);
+        initSecondaryStage(secondaryStage);
 
         listener.indexFingerElementProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
@@ -99,23 +114,14 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.keyTapGestureValue().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                /*if (editMode) {
-                    if (selectedElement != null && selectedElement == -1)
-                        listener.toggleEditMode();
-                }*/
-            });
-        });
-
         listener.screenTapGestureValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if (editMode) {
-                    selectedElement = actualElement;
+                    highlightedElement = actualElement;
                     selectElement(actualElement);
                 } else {
-                    resetElement(selectedElement);
-                    selectedElement = null;
+                    resetElement(highlightedElement);
+                    highlightedElement = null;
                 }
             });
         });
@@ -124,7 +130,7 @@ public class HUDJavaFX extends Application {
             Platform.runLater(() -> {
                 System.out.println("reset all");
                 if (newValue) {
-                    selectedElement = null;
+                    highlightedElement = null;
                     for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
                         resetElement(i);
                     }
@@ -132,39 +138,87 @@ public class HUDJavaFX extends Application {
             });
         });
 
+        listener.elememntIteratorValue().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                setSequenceText(newValue);
+            });
+        });
+
         primaryStage.show();
 
+        if (LeapFXConstant.SHOW_SUBVIEW) {
+            secondaryStage.show();
+        }
     }
 
-    private void initElements() {
+    private void initPrimaryElements() {
         for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
-            Rectangle element = new Rectangle(LeapFXConstant.ELEMENT_WIDTH * i, 0.0,
-                    LeapFXConstant.ELEMENT_WIDTH, LeapFXConstant.ELEMENT_HEIGHT);
-            element.setFill(Color.WHITE);
-            element.setStroke(Color.BLACK);
-            elements[i] = element;
+            Rectangle rectangle = new Rectangle(
+                    LeapFXConstant.HUD_WIDTH, LeapFXConstant.HUD_HEIGHT);
+            Text text = new Text(String.valueOf(i + 1));
+
+            rectangle.setFill(Color.WHITE);
+            rectangle.setStroke(Color.BLACK);
+
+            text.setFont(Font.font(LeapFXConstant.TEXT_SIZE));
+            text.setBoundsType(TextBoundsType.VISUAL);
+
+            StackPane stackPane = new StackPane();
+            stackPane.setTranslateX(LeapFXConstant.HUD_WIDTH * i);
+            stackPane.setTranslateY(0.0);
+            stackPane.getChildren().addAll(rectangle, text);
+
+            rectangles[i] = rectangle;
+            rectangleText[i] = text;
+            elements[i] = stackPane;
 
         }
-        rectangles.getChildren().addAll(elements);
+        elementGroup.getChildren().addAll(elements);
+    }
+
+    private void initSecondaryStage(Stage secondaryStage) {
+        Rectangle rectangle = new Rectangle(200, 200);
+        StackPane stackPane = new StackPane();
+
+        rectangle.setFill(Color.WHITE);
+        rectangle.setStroke(Color.BLACK);
+        sequenceText.setFont(Font.font(LeapFXConstant.TEXT_SIZE));
+        sequenceText.setBoundsType(TextBoundsType.VISUAL);
+
+        stackPane.getChildren().addAll(rectangle, sequenceText);
+        secondaryStage.setScene(new Scene(stackPane, 200, 200));
+    }
+
+    private void setSequenceText(Integer sequenceNumber) {
+        if (LeapFXConstant.SHOW_SUBVIEW) {
+            sequenceText.setText(sequenceNumber.toString());
+        } else {
+            Text text = rectangleText[sequenceNumber - 1];
+            text.setText(sequenceNumber.toString());
+            text.setFill(Color.FUCHSIA);
+        }
     }
 
     private void highlightElement(Integer elem) {
-        if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS && !elem.equals(selectedElement)) {
-            Rectangle rec = elements[elem];
+        if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS && !elem.equals(highlightedElement)) {
+            Rectangle rec = rectangles[elem];
             rec.setFill(Color.LIGHTYELLOW);
         }
     }
 
     static void resetElement(Integer elem) {
         if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS) {
-            Rectangle rec = elements[elem];
+            Rectangle rec = rectangles[elem];
+            Text text = rectangleText[elem];
+
             rec.setFill(Color.WHITE);
+            text.setFill(Color.BLACK);
         }
     }
 
     private void selectElement(Integer elem) {
         if (editMode) {
-            Rectangle rec = elements[elem];
+            Rectangle rec = rectangles[elem];
             rec.setFill(Color.LIGHTGREEN);
         }
     }
