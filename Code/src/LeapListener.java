@@ -30,7 +30,7 @@ class LeapListener extends Listener {
         return screenTapGestureProperty;
     }
 
-    ObservableValue<Boolean> resetAllValue() {
+    ObservableValue<Boolean> resetAllValues() {
         return resetAllProperty;
     }
 
@@ -40,10 +40,13 @@ class LeapListener extends Listener {
 
 
     private long startTime;
+    private long delayTime;
     private int sequenceCount;
+    private boolean start = false;
 
     private static final Integer[] elementsTouched = new Integer[LeapFXConstant.SEQUENCE_LENGTH];
     private static final double[] angelsTouched = new double[LeapFXConstant.SEQUENCE_LENGTH];
+    private static final Integer[] sequence = HUDJavaFX.getSequence();
 
     @Override
     public void onConnect(Controller controller) {
@@ -51,11 +54,11 @@ class LeapListener extends Listener {
         editMode.setValue(false);
         resetAllProperty.setValue(false);
         sequenceCount = 0;
-        elementIteratorProperty.setValue(requireNonNull(LeapFXConstant.SEQUENCE)[sequenceCount]);
     }
 
     @Override
     public void onFrame(Controller controller) {
+
         super.onFrame(controller);
         Frame frame = controller.frame();
 
@@ -69,6 +72,12 @@ class LeapListener extends Listener {
 
                 if (hand.isValid()) {
 
+                    if (!start) {
+                        start = true;
+                        startTime = System.currentTimeMillis();
+                        elementIteratorProperty.setValue(sequence[sequenceCount]);
+                    }
+
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
 
@@ -77,6 +86,9 @@ class LeapListener extends Listener {
                             toggleEditMode();
                             screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
                             elementsTouched[sequenceCount] = indexFingerElement.getValue();
+                            if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
+                                saveData(System.currentTimeMillis() - startTime);
+                            }
                         }
                     }
                 }
@@ -84,12 +96,6 @@ class LeapListener extends Listener {
                 if (!editMode.getValue()) {
                     for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
                         HUDJavaFX.resetElement(i);
-                    }
-                } else if (editMode.getValue()) {
-                    long handsFreeTime = System.currentTimeMillis() - startTime;
-                    if (handsFreeTime > LeapFXConstant.TIME_OUT_IN_MS) {
-                        editMode.setValue(false);
-                        resetAllProperty.setValue(true);
                     }
                 }
             }
@@ -108,9 +114,9 @@ class LeapListener extends Listener {
         return LeapCalcFunctions.getRectangleFromAngel(angel);
     }
 
-    private void saveData(){
-        if(FileHandlingFunctions.saveUserLog(LeapCalcFunctions.getDefinedAngels(),
-                LeapFXConstant.SEQUENCE, elementsTouched, angelsTouched, 0)){
+    private void saveData(long time) {
+        if (FileHandlingFunctions.saveUserLog(LeapCalcFunctions.getDefinedAngels(),
+                sequence, elementsTouched, angelsTouched, time)) {
             System.out.println("Data saved");
         } else {
             System.out.println("Error at saving the data");

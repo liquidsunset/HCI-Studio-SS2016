@@ -36,7 +36,7 @@ final class FileHandlingFunctions {
         for (int i = 0; i < size; i++) {
             buffer.append(random.nextInt(LeapFXConstant.COUNT_ELEMENTS));
             if (i != size - 1) {
-                buffer.append(", ");
+                buffer.append(",");
             }
         }
 

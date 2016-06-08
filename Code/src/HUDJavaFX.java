@@ -27,10 +27,12 @@ public class HUDJavaFX extends Application {
     private Integer actualElement;
     private static final Rectangle[] rectangles = new Rectangle[LeapFXConstant.COUNT_ELEMENTS];
     private static final Text[] rectangleText = new Text[LeapFXConstant.COUNT_ELEMENTS];
-    private static final Text sequenceText = new Text("0");
+    private static final Text sequenceText = new Text("");
     private static final StackPane[] elements = new StackPane[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
     private Group elementGroup;
+
+    private static Integer[] sequence;
 
     public static void main(String[] args) {
 
@@ -50,7 +52,8 @@ public class HUDJavaFX extends Application {
                     LeapFXConstant.OVERWRITE_SEQUENCE);
         }
 
-        LeapFXConstant.SEQUENCE = FileHandlingFunctions.getSequence();
+        sequence = FileHandlingFunctions.getSequence();
+
         launch();
     }
 
@@ -77,7 +80,6 @@ public class HUDJavaFX extends Application {
         initPrimaryElements();
 
         FileHandlingFunctions.createSequence(10, true);
-        FileHandlingFunctions.saveUserLog(null, null, null, null, 0);
     }
 
     @Override
@@ -116,14 +118,11 @@ public class HUDJavaFX extends Application {
                 if (editMode) {
                     highlightedElement = actualElement;
                     selectElement(actualElement);
-                } else {
-                    resetElement(highlightedElement);
-                    highlightedElement = null;
                 }
             });
         });
 
-        listener.resetAllValue().addListener((observable, oldValue, newValue) -> {
+        listener.resetAllValues().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 System.out.println("reset all");
                 if (newValue) {
@@ -135,8 +134,10 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.elementIteratorValue().addListener((observable, oldValue, newValue) -> {
+        listener.elementIteratorValue().addListener((observable, oldValue, newValue) ->{
             Platform.runLater(() -> {
+                System.out.println(oldValue);
+                System.out.println(newValue);
                 setSequenceText(newValue);
             });
         });
@@ -218,6 +219,10 @@ public class HUDJavaFX extends Application {
             Rectangle rec = rectangles[elem];
             rec.setFill(Color.LIGHTGREEN);
         }
+    }
+
+    public static Integer[] getSequence(){
+        return sequence;
     }
 
     @Override
