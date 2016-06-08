@@ -13,19 +13,11 @@ final class LeapCalcFunctions {
     }
 
     static int getRectangleFromAngel(double angelToXAxis) {
-        double[] angels;
-        switch (LeapFXConstant.COUNT_ELEMENTS) {
-            case 3:
-                angels = LeapFXConstant.ANGELS_THREE_ELEMENTS;
-                break;
-            case 4:
-                angels = LeapFXConstant.ANGELS_FOUR_ELEMENTS;
-                break;
-            case 5:
-                angels = LeapFXConstant.ANGELS_FIVE_ELEMENTS;
-                break;
-            default:
-                return -1;
+
+        double[] angels = getDefinedAngels();
+
+        if (angels == null) {
+            return -1;
         }
 
         for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
@@ -39,5 +31,25 @@ final class LeapCalcFunctions {
 
     private static boolean isBetween(double fromValue, double toValue, double value) {
         return toValue > fromValue ? value > fromValue && value <= toValue : value >= toValue && value < fromValue;
+    }
+
+    static double[] getDefinedAngels() {
+
+        double[] definedAngels;
+        switch (LeapFXConstant.COUNT_ELEMENTS) {
+            case 3:
+                definedAngels = LeapFXConstant.ANGELS_THREE_ELEMENTS;
+                break;
+            case 4:
+                definedAngels = LeapFXConstant.ANGELS_FOUR_ELEMENTS;
+                break;
+            case 5:
+                definedAngels = LeapFXConstant.ANGELS_FIVE_ELEMENTS;
+                break;
+            default:
+                return null;
+        }
+
+        return definedAngels;
     }
 }

@@ -31,7 +31,6 @@ public class HUDJavaFX extends Application {
     private static final StackPane[] elements = new StackPane[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
     private Group elementGroup;
-    private static Integer[] sequence;
 
     public static void main(String[] args) {
 
@@ -47,11 +46,11 @@ public class HUDJavaFX extends Application {
         }
 
         if (createSequence) {
-            FileHandlingFunctions.createSequence(LeapFXConstant.FILE_SEQUENCE_LENGTH,
+            FileHandlingFunctions.createSequence(LeapFXConstant.SEQUENCE_LENGTH,
                     LeapFXConstant.OVERWRITE_SEQUENCE);
         }
 
-        sequence = FileHandlingFunctions.getSequence();
+        LeapFXConstant.SEQUENCE = FileHandlingFunctions.getSequence();
         launch();
     }
 
@@ -74,13 +73,11 @@ public class HUDJavaFX extends Application {
 
         //initScene
         elementGroup = new Group();
-        scene = new Scene(elementGroup, LeapFXConstant.HUD_WIDTH * LeapFXConstant.COUNT_ELEMENTS,
-                LeapFXConstant.HUD_HEIGHT);
+        scene = new Scene(elementGroup, LeapFXConstant.HUD_WIDTH, LeapFXConstant.HUD_HEIGHT);
         initPrimaryElements();
 
         FileHandlingFunctions.createSequence(10, true);
-
-        sequence = FileHandlingFunctions.getSequence();
+        FileHandlingFunctions.saveUserLog(null, null, null, null, 0);
     }
 
     @Override
@@ -138,7 +135,7 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.elememntIteratorValue().addListener((observable, oldValue, newValue) -> {
+        listener.elementIteratorValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 setSequenceText(newValue);
             });
@@ -152,9 +149,9 @@ public class HUDJavaFX extends Application {
     }
 
     private void initPrimaryElements() {
+        double elementWidth = Math.floor(LeapFXConstant.HUD_WIDTH / LeapFXConstant.COUNT_ELEMENTS);
         for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
-            Rectangle rectangle = new Rectangle(
-                    LeapFXConstant.HUD_WIDTH, LeapFXConstant.HUD_HEIGHT);
+            Rectangle rectangle = new Rectangle(elementWidth, LeapFXConstant.HUD_HEIGHT);
             Text text = new Text(String.valueOf(i + 1));
 
             rectangle.setFill(Color.WHITE);
@@ -164,7 +161,7 @@ public class HUDJavaFX extends Application {
             text.setBoundsType(TextBoundsType.VISUAL);
 
             StackPane stackPane = new StackPane();
-            stackPane.setTranslateX(LeapFXConstant.HUD_WIDTH * i);
+            stackPane.setTranslateX(elementWidth * i);
             stackPane.setTranslateY(0.0);
             stackPane.getChildren().addAll(rectangle, text);
 
@@ -200,7 +197,8 @@ public class HUDJavaFX extends Application {
     }
 
     private void highlightElement(Integer elem) {
-        if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS && !elem.equals(highlightedElement)) {
+        if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS &&
+                !elem.equals(highlightedElement)) {
             Rectangle rec = rectangles[elem];
             rec.setFill(Color.LIGHTYELLOW);
         }
@@ -210,7 +208,6 @@ public class HUDJavaFX extends Application {
         if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS) {
             Rectangle rec = rectangles[elem];
             Text text = rectangleText[elem];
-
             rec.setFill(Color.WHITE);
             text.setFill(Color.BLACK);
         }

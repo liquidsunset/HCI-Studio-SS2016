@@ -1,7 +1,5 @@
 import com.leapmotion.leap.*;
 
-import java.util.Objects;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -36,23 +34,24 @@ class LeapListener extends Listener {
         return resetAllProperty;
     }
 
-    ObservableValue<Integer> elememntIteratorValue() {
+    ObservableValue<Integer> elementIteratorValue() {
         return elementIteratorProperty;
     }
 
 
     private long startTime;
-    private Integer[] sequence;
     private int sequenceCount;
+
+    private static final Integer[] elementsTouched = new Integer[LeapFXConstant.SEQUENCE_LENGTH];
+    private static final double[] angelsTouched = new double[LeapFXConstant.SEQUENCE_LENGTH];
 
     @Override
     public void onConnect(Controller controller) {
         super.onConnect(controller);
         editMode.setValue(false);
         resetAllProperty.setValue(false);
-        sequence = FileHandlingFunctions.getSequence();
         sequenceCount = 0;
-        elementIteratorProperty.setValue(requireNonNull(sequence)[sequenceCount]);
+        elementIteratorProperty.setValue(requireNonNull(LeapFXConstant.SEQUENCE)[sequenceCount]);
     }
 
     @Override
@@ -77,6 +76,7 @@ class LeapListener extends Listener {
                         if (Gesture.Type.TYPE_SCREEN_TAP.equals(gesture.type())) {
                             toggleEditMode();
                             screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
+                            elementsTouched[sequenceCount] = indexFingerElement.getValue();
                         }
                     }
                 }
@@ -106,5 +106,14 @@ class LeapListener extends Listener {
     private int getElementFromIndexFingerAngel(Vector indexFingerVector) {
         double angel = LeapCalcFunctions.calcAngelBetweenVectorsInDegrees(indexFingerVector, Vector.xAxis());
         return LeapCalcFunctions.getRectangleFromAngel(angel);
+    }
+
+    private void saveData(){
+        if(FileHandlingFunctions.saveUserLog(LeapCalcFunctions.getDefinedAngels(),
+                LeapFXConstant.SEQUENCE, elementsTouched, angelsTouched, 0)){
+            System.out.println("Data saved");
+        } else {
+            System.out.println("Error at saving the data");
+        }
     }
 }
