@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 final class FileHandlingFunctions {
 
     static boolean createSequence(int size, boolean overwrite) {
-        File file = new File(LeapFXConstant.FILE_SEQUENCE_NAME);
+        File file = new File(LeapFXConstant.FILE_SEQUENCE_NAME +
+                LeapFXConstant.COUNT_ELEMENTS + ".txt");
         if (file.exists() && !overwrite) {
             return false;
         }
@@ -45,7 +46,8 @@ final class FileHandlingFunctions {
 
     static Integer[] getSequence() {
         Integer[] sequenceNumbers;
-        try (Scanner scanner = new Scanner(new File(LeapFXConstant.FILE_SEQUENCE_NAME))) {
+        try (Scanner scanner = new Scanner(new File(LeapFXConstant.FILE_SEQUENCE_NAME +
+                LeapFXConstant.COUNT_ELEMENTS + ".txt"))) {
             String[] sequence = scanner.next().split(",");
             sequenceNumbers = new Integer[sequence.length];
             for (int i = 0; i < sequence.length; i++) {
@@ -70,11 +72,13 @@ final class FileHandlingFunctions {
         String logName = LeapFXConstant.LOG_NAME;
         String systemLineSeparator = System.lineSeparator();
         File[] files = alreadyCreatedLogs.listFiles(filter);
+
         if (files.length > 0) {
             logName += files.length + 1 + "_ElementSize" + LeapFXConstant.COUNT_ELEMENTS + ".txt";
         } else {
             logName += 1 + "_ElementSize" + LeapFXConstant.COUNT_ELEMENTS + ".txt";
         }
+
         File fileToSave = new File(logName);
 
         StringBuilder buffer = new StringBuilder();

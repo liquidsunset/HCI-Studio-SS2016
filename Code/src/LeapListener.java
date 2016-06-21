@@ -1,4 +1,5 @@
 import com.leapmotion.leap.*;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -69,7 +70,13 @@ class LeapListener extends Listener {
                 int saveLastValue = indexFingerElement.getValue();
                 indexFingerElement.setValue(null);
                 indexFingerElement.setValue(saveLastValue);
-                System.out.println(indexFingerElement.getValue());
+                if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
+                    saveData(System.currentTimeMillis() - startTime);
+                    System.exit(0);
+                } else {
+                    sequenceCount++;
+                    elementIteratorProperty.setValue(sequence[sequenceCount]);
+                }
             }
         }
 
@@ -98,10 +105,10 @@ class LeapListener extends Listener {
                             delayTime = System.currentTimeMillis();
                             screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
                             if (!LeapFXConstant.FREE_MODE) {
-                                elementsTouched[sequenceCount] = indexFingerElement.getValue();
-                                if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
-                                    saveData(System.currentTimeMillis() - startTime);
-                                }
+                                elementsTouched[sequenceCount] = indexFingerElement.getValue() + 1;
+                                angelsTouched[sequenceCount] = LeapCalcFunctions
+                                        .calcAngelBetweenVectorsInDegrees(indexFinger.direction(),
+                                                Vector.xAxis());
                             }
                         }
                     }

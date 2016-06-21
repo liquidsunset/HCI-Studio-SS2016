@@ -32,6 +32,7 @@ public class HUDJavaFX extends Application {
     private static final StackPane[] elements = new StackPane[LeapFXConstant.COUNT_ELEMENTS];
     private Scene scene;
     private Group elementGroup;
+    private static Integer actualSequenceElement = null;
 
     private static Integer[] sequence;
 
@@ -80,7 +81,6 @@ public class HUDJavaFX extends Application {
         scene = new Scene(elementGroup, LeapFXConstant.HUD_WIDTH, LeapFXConstant.HUD_HEIGHT);
         initPrimaryElements();
 
-        FileHandlingFunctions.createSequence(10, true);
     }
 
     @Override
@@ -140,9 +140,8 @@ public class HUDJavaFX extends Application {
 
         listener.elementIteratorValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                System.out.println(oldValue);
-                System.out.println(newValue);
                 setSequenceText(newValue);
+                actualSequenceElement = newValue;
             });
         });
 
@@ -217,9 +216,14 @@ public class HUDJavaFX extends Application {
     static void resetElement(Integer elem) {
         if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS) {
             Rectangle rec = rectangles[elem];
-            Text text = rectangleText[elem];
             rec.setFill(Color.WHITE);
-            text.setFill(Color.BLACK);
+            Text text = rectangleText[elem];
+            if (!LeapFXConstant.SHOW_SUBVIEW && actualSequenceElement != null
+                    && actualSequenceElement.equals(elem - 1)) {
+                text.setFill(Color.FUCHSIA);
+            } else {
+                text.setFill(Color.BLACK);
+            }
         }
     }
 
