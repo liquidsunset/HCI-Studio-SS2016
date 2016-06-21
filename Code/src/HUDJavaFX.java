@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -63,9 +64,9 @@ public class HUDJavaFX extends Application {
         super.init();
 
         //screenTap config
-        leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 50.0f);
-        leapController.config().setFloat("Gesture.ScreenTap.HistorySeconds", 0.15f);
-        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 6.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 40.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.HistorySeconds", 0.20f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 5.0f);
         leapController.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 
         //save leap config
@@ -93,16 +94,20 @@ public class HUDJavaFX extends Application {
 
         listener.indexFingerElementProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                if (editMode) {
-                    System.out.println("in edit mode");
+                if (newValue == null) {
                     return;
                 }
 
-                if (!newValue.equals(oldValue)) {
-                    actualElement = newValue;
-                    highlightElement(newValue);
-                    resetElement(oldValue);
+                if (editMode) {
+                    return;
+                } else {
+                    highlightedElement = null;
                 }
+
+                actualElement = newValue;
+                resetElement(oldValue);
+                highlightElement(newValue);
+
             });
         });
 
@@ -124,7 +129,6 @@ public class HUDJavaFX extends Application {
 
         listener.resetAllValues().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                System.out.println("reset all");
                 if (newValue) {
                     highlightedElement = null;
                     for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
@@ -134,7 +138,7 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.elementIteratorValue().addListener((observable, oldValue, newValue) ->{
+        listener.elementIteratorValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 System.out.println(oldValue);
                 System.out.println(newValue);
@@ -160,6 +164,11 @@ public class HUDJavaFX extends Application {
 
             text.setFont(Font.font(LeapFXConstant.TEXT_SIZE));
             text.setBoundsType(TextBoundsType.VISUAL);
+
+            if (LeapFXConstant.MIRROR) {
+                text.setRotationAxis(Rotate.X_AXIS);
+                text.setRotate(180.0);
+            }
 
             StackPane stackPane = new StackPane();
             stackPane.setTranslateX(elementWidth * i);
@@ -216,12 +225,13 @@ public class HUDJavaFX extends Application {
 
     private void selectElement(Integer elem) {
         if (editMode) {
+            System.out.println("selected");
             Rectangle rec = rectangles[elem];
             rec.setFill(Color.LIGHTGREEN);
         }
     }
 
-    public static Integer[] getSequence(){
+    static Integer[] getSequence() {
         return sequence;
     }
 

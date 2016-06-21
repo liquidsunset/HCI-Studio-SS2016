@@ -34,7 +34,7 @@ final class FileHandlingFunctions {
         StringBuilder buffer = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < size; i++) {
-            buffer.append(random.nextInt(LeapFXConstant.COUNT_ELEMENTS));
+            buffer.append(random.nextInt(LeapFXConstant.COUNT_ELEMENTS) + 1);
             if (i != size - 1) {
                 buffer.append(",");
             }
@@ -54,6 +54,7 @@ final class FileHandlingFunctions {
         } catch (IOException e) {
             return null;
         }
+
         return sequenceNumbers;
     }
 

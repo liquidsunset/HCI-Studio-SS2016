@@ -1,10 +1,7 @@
 import com.leapmotion.leap.*;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Created by liquidsunset on 18.05.16.
@@ -43,6 +40,7 @@ class LeapListener extends Listener {
     private long delayTime;
     private int sequenceCount;
     private boolean start = false;
+    private boolean shouldReset = false;
 
     private static final Integer[] elementsTouched = new Integer[LeapFXConstant.SEQUENCE_LENGTH];
     private static final double[] angelsTouched = new double[LeapFXConstant.SEQUENCE_LENGTH];
@@ -62,13 +60,26 @@ class LeapListener extends Listener {
         super.onFrame(controller);
         Frame frame = controller.frame();
 
+
+        if (editMode.getValue()) {
+            long timeConsumed = System.currentTimeMillis() - delayTime;
+            if (timeConsumed >= LeapFXConstant.TIME_OUT_IN_MS) {
+                toggleEditMode();
+                resetAllElements();
+                int saveLastValue = indexFingerElement.getValue();
+                indexFingerElement.setValue(null);
+                indexFingerElement.setValue(saveLastValue);
+                System.out.println(indexFingerElement.getValue());
+            }
+        }
+
         Screen screen = controller.locatedScreens().get(0);
         if (screen != null && screen.isValid()) {
             if (!frame.hands().isEmpty()) {
+                shouldReset = true;
                 Hand hand = frame.hands().rightmost();
 
                 resetAllProperty.setValue(false);
-                startTime = System.currentTimeMillis();
 
                 if (hand.isValid()) {
 
@@ -84,21 +95,31 @@ class LeapListener extends Listener {
                     for (Gesture gesture : frame.gestures()) {
                         if (Gesture.Type.TYPE_SCREEN_TAP.equals(gesture.type())) {
                             toggleEditMode();
+                            delayTime = System.currentTimeMillis();
                             screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));
-                            elementsTouched[sequenceCount] = indexFingerElement.getValue();
-                            if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
-                                saveData(System.currentTimeMillis() - startTime);
+                            if (!LeapFXConstant.FREE_MODE) {
+                                elementsTouched[sequenceCount] = indexFingerElement.getValue();
+                                if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
+                                    saveData(System.currentTimeMillis() - startTime);
+                                }
                             }
                         }
                     }
                 }
             } else {
                 if (!editMode.getValue()) {
-                    for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
-                        HUDJavaFX.resetElement(i);
+                    if (shouldReset) {
+                        resetAllElements();
+                        shouldReset = false;
                     }
                 }
             }
+        }
+    }
+
+    private void resetAllElements() {
+        for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
+            HUDJavaFX.resetElement(i);
         }
     }
 

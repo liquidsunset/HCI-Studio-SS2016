@@ -36,18 +36,35 @@ final class LeapCalcFunctions {
     static double[] getDefinedAngels() {
 
         double[] definedAngels;
-        switch (LeapFXConstant.COUNT_ELEMENTS) {
-            case 3:
-                definedAngels = LeapFXConstant.ANGELS_THREE_ELEMENTS;
-                break;
-            case 4:
-                definedAngels = LeapFXConstant.ANGELS_FOUR_ELEMENTS;
-                break;
-            case 5:
-                definedAngels = LeapFXConstant.ANGELS_FIVE_ELEMENTS;
-                break;
-            default:
-                return null;
+        if (!LeapFXConstant.DIRECT_LINE_MODE) {
+
+            switch (LeapFXConstant.COUNT_ELEMENTS) {
+                case 3:
+                    definedAngels = LeapFXConstant.ANGELS_THREE_ELEMENTS;
+                    break;
+                case 4:
+                    definedAngels = LeapFXConstant.ANGELS_FOUR_ELEMENTS;
+                    break;
+                case 5:
+                    definedAngels = LeapFXConstant.ANGELS_FIVE_ELEMENTS;
+                    break;
+                default:
+                    return null;
+            }
+        } else {
+            switch (LeapFXConstant.COUNT_ELEMENTS) {
+                case 3:
+                    definedAngels = LeapFXConstant.ANGELS_THREE_ELEMENTS_DIRECT;
+                    break;
+                case 4:
+                    definedAngels = LeapFXConstant.ANGELS_FOUR_ELEMENTS_DIRECT;
+                    break;
+                case 5:
+                    definedAngels = LeapFXConstant.ANGELS_FIVE_ELEMENTS_DIRECT;
+                    break;
+                default:
+                    return null;
+            }
         }
 
         return definedAngels;
