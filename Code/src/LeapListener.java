@@ -61,6 +61,16 @@ class LeapListener extends Listener {
         super.onFrame(controller);
         Frame frame = controller.frame();
 
+        if (!start) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            start = true;
+            startTime = System.currentTimeMillis();
+            elementIteratorProperty.setValue(sequence[sequenceCount]);
+        }
 
         if (editMode.getValue()) {
             long timeConsumed = System.currentTimeMillis() - delayTime;
@@ -89,12 +99,6 @@ class LeapListener extends Listener {
                 resetAllProperty.setValue(false);
 
                 if (hand.isValid()) {
-
-                    if (!start) {
-                        start = true;
-                        startTime = System.currentTimeMillis();
-                        elementIteratorProperty.setValue(sequence[sequenceCount]);
-                    }
 
                     Finger indexFinger = hand.fingers().fingerType(Finger.Type.TYPE_INDEX).rightmost();
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
