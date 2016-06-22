@@ -64,10 +64,7 @@ final class FileHandlingFunctions {
                                double[] angelsTouched, long time) {
 
         File alreadyCreatedLogs = new File(".");
-        FilenameFilter filter = (dir, name) -> {
-            String lowerCaseName = name.toLowerCase();
-            return lowerCaseName.contains(LeapFXConstant.LOG_NAME);
-        };
+        FilenameFilter filter = (dir, name) -> name.contains(LeapFXConstant.LOG_NAME);
 
         String logName = LeapFXConstant.LOG_NAME;
         String systemLineSeparator = System.lineSeparator();
