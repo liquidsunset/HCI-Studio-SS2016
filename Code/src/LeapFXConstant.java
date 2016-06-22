@@ -6,11 +6,11 @@ class LeapFXConstant {
     static final boolean FREE_MODE = false;
     static final boolean DIRECT_LINE_MODE = false;
     static final boolean MIRROR = false;
-    static final boolean SHOW_SUBVIEW = false;
+    static final boolean SHOW_SUBVIEW = true;
     static final boolean OVERWRITE_SEQUENCE = true;
     static final String FILE_SEQUENCE_NAME = "SEQUENCE";
     static final String LOG_NAME = "logForTest";
-    static final int SEQUENCE_LENGTH = 2;
+    static final int SEQUENCE_LENGTH = 10;
     static final int TEXT_SIZE = 50;
     static final int COUNT_ELEMENTS = 3;
     static final double HUD_WIDTH = 800;

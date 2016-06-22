@@ -81,6 +81,7 @@ class LeapListener extends Listener {
                 indexFingerElement.setValue(null);
                 indexFingerElement.setValue(saveLastValue);
                 if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
+                	System.out.println(sequenceCount);
                     saveData(System.currentTimeMillis() - startTime);
                     System.exit(0);
                 } else {
