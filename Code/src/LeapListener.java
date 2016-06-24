@@ -75,16 +75,18 @@ class LeapListener extends Listener {
         if (editMode.getValue()) {
             long timeConsumed = System.currentTimeMillis() - delayTime;
             if (timeConsumed >= LeapFXConstant.TIME_OUT_IN_MS) {
-                if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
-                    try {
-                        saveData(System.currentTimeMillis() - startTime);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (!LeapFXConstant.FREE_MODE) {
+                    if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
+                        try {
+                            saveData(System.currentTimeMillis() - startTime);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.exit(0);
+                    } else {
+                        sequenceCount++;
+                        elementIteratorProperty.setValue(sequence[sequenceCount]);
                     }
-                    System.exit(0);
-                } else {
-                    sequenceCount++;
-                    elementIteratorProperty.setValue(sequence[sequenceCount]);
                 }
 
                 toggleEditMode();
