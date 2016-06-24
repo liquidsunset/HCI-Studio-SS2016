@@ -161,7 +161,7 @@ public class HUDJavaFX extends Application {
             text.setFont(Font.font(LeapFXConstant.TEXT_SIZE));
             text.setBoundsType(TextBoundsType.VISUAL);
 
-            if (LeapFXConstant.MIRROR) {
+            if (LeapFXConstant.MIRROR_MAIN_VIEW) {
                 text.setRotationAxis(Rotate.X_AXIS);
                 text.setRotate(180.0);
             }
@@ -187,6 +187,11 @@ public class HUDJavaFX extends Application {
         rectangle.setStroke(Color.BLACK);
         sequenceText.setFont(Font.font(LeapFXConstant.TEXT_SIZE));
         sequenceText.setBoundsType(TextBoundsType.VISUAL);
+
+        if (LeapFXConstant.MIRROR_SUB_VIEW) {
+            sequenceText.setRotationAxis(Rotate.X_AXIS);
+            sequenceText.setRotate(180.0);
+        }
 
         stackPane.getChildren().addAll(rectangle, sequenceText);
         secondaryStage.setScene(new Scene(stackPane, 200, 200));

@@ -5,7 +5,8 @@ class LeapFXConstant {
 
     static final boolean FREE_MODE = false;
     static final boolean DIRECT_LINE_MODE = false;
-    static final boolean MIRROR = false;
+    static final boolean MIRROR_MAIN_VIEW = false;
+    static final boolean MIRROR_SUB_VIEW = false;
     static final boolean SHOW_SUBVIEW = true;
     static final boolean OVERWRITE_SEQUENCE = true;
     static final String FILE_SEQUENCE_NAME = "SEQUENCE";
