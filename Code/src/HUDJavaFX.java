@@ -112,10 +112,7 @@ public class HUDJavaFX extends Application {
         });
 
         listener.isInEditMode().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                this.editMode = newValue;
-                System.out.println(newValue);
-            });
+            Platform.runLater(() -> this.editMode = newValue);
         });
 
         listener.screenTapGestureValue().addListener((observable, oldValue, newValue) -> {
