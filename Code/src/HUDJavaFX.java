@@ -48,7 +48,7 @@ public class HUDJavaFX extends Application {
         } else {
             createSequence = false;
         }
-
+        createSequence = false;
         if (createSequence) {
             FileHandlingFunctions.createSequence(LeapFXConstant.SEQUENCE_LENGTH,
                     LeapFXConstant.OVERWRITE_SEQUENCE);
@@ -229,7 +229,6 @@ public class HUDJavaFX extends Application {
 
     private void selectElement(Integer elem) {
         if (editMode) {
-            System.out.println("selected");
             Rectangle rec = rectangles[elem];
             rec.setFill(Color.LIGHTGREEN);
         }

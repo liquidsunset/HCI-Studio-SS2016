@@ -38,8 +38,8 @@ class LeapListener extends Listener {
 
 
     private long startTime;
-    private long delayTime;
-    private int sequenceCount;
+    volatile private long delayTime;
+    volatile private int sequenceCount;
     private boolean start = false;
     private boolean shouldReset = false;
 
@@ -74,19 +74,26 @@ class LeapListener extends Listener {
 
         if (editMode.getValue()) {
             long timeConsumed = System.currentTimeMillis() - delayTime;
+            System.out.println(timeConsumed);
             if (timeConsumed >= LeapFXConstant.TIME_OUT_IN_MS) {
-                toggleEditMode();
-                resetAllElements();
-                int saveLastValue = indexFingerElement.getValue();
-                indexFingerElement.setValue(null);
-                indexFingerElement.setValue(saveLastValue);
-                if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
-                    saveData(System.currentTimeMillis() - startTime);
+                System.out.println(sequenceCount);
+                if ((sequenceCount + 1) == LeapFXConstant.SEQUENCE_LENGTH) {
+                    try {
+                        saveData(System.currentTimeMillis() - startTime);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 } else {
                     sequenceCount++;
                     elementIteratorProperty.setValue(sequence[sequenceCount]);
                 }
+
+                toggleEditMode();
+                resetAllElements();
+                int saveLastValue = indexFingerElement.getValue();
+                indexFingerElement.setValue(null);
+                indexFingerElement.setValue(saveLastValue);
             }
         }
 
@@ -146,7 +153,7 @@ class LeapListener extends Listener {
         return LeapCalcFunctions.getRectangleFromAngel(angel);
     }
 
-    private void saveData(long time) {
+    private synchronized void saveData(long time) throws Exception {
         if (FileHandlingFunctions.saveUserLog(LeapCalcFunctions.getDefinedAngels(),
                 sequence, elementsTouched, angelsTouched, time)) {
             System.out.println("Data saved");
