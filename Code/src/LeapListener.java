@@ -76,8 +76,8 @@ class LeapListener extends Listener {
             long timeConsumed = System.currentTimeMillis() - delayTime;
             System.out.println(timeConsumed);
             if (timeConsumed >= LeapFXConstant.TIME_OUT_IN_MS) {
-                System.out.println(sequenceCount);
-                if ((sequenceCount + 1) == LeapFXConstant.SEQUENCE_LENGTH) {
+                if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
+                	System.out.println(sequenceCount);
                     try {
                         saveData(System.currentTimeMillis() - startTime);
                     } catch (Exception e) {
