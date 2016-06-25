@@ -108,12 +108,12 @@ final class FileHandlingFunctions {
 
         }
 
-        BigDecimal angle = new BigDecimal((double) touchedWrong /
-                (double) sequence.length);
+        BigDecimal angle = new BigDecimal(((double) touchedWrong /
+                (double) sequence.length) * 100.0);
         buffer.append(systemLineSeparator);
         buffer.append("Error rate in %: ");
         buffer.append(angle.setScale(LeapFXConstant.DOUBLE_ROUND_DECIMAL,
-                BigDecimal.ROUND_HALF_UP).doubleValue() * 100);
+                BigDecimal.ROUND_HALF_UP).doubleValue());
 
         return saveFile(fileToSave, buffer);
     }
