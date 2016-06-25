@@ -65,9 +65,9 @@ public class HUDJavaFX extends Application {
         super.init();
 
         //screenTap config
-        leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 40.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 35.0f);
         leapController.config().setFloat("Gesture.ScreenTap.HistorySeconds", 0.20f);
-        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 5.0f);
+        leapController.config().setFloat("Gesture.ScreenTap.MinDistance", 4.0f);
         leapController.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 
         //save leap config
