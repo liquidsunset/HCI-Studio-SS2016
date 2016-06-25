@@ -126,8 +126,11 @@ public class HUDJavaFX extends Application {
 
         listener.elementIteratorValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                setSequenceText(newValue);
-                actualSequenceElement = newValue;
+                if (newValue != null) {
+                    setSequenceText(newValue);
+                    actualSequenceElement = newValue;
+                    System.out.println("iterator fired");
+                }
             });
         });
 
@@ -192,7 +195,7 @@ public class HUDJavaFX extends Application {
         } else {
             Text text = rectangleText[sequenceNumber - 1];
             text.setText(sequenceNumber.toString());
-            text.setFill(Color.FUCHSIA);
+            text.setFill(Color.ORANGERED);
         }
     }
 
@@ -200,7 +203,7 @@ public class HUDJavaFX extends Application {
         if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS &&
                 !elem.equals(highlightedElement)) {
             Rectangle rec = rectangles[elem];
-            rec.setFill(Color.LIGHTBLUE);
+            rec.setFill(Color.CORNFLOWERBLUE);
         }
     }
 
@@ -210,8 +213,8 @@ public class HUDJavaFX extends Application {
             rec.setFill(Color.WHITE);
             Text text = rectangleText[elem];
             if (!LeapFXConstant.SHOW_SUBVIEW && actualSequenceElement != null
-                    && actualSequenceElement.equals(elem - 1)) {
-                text.setFill(Color.FUCHSIA);
+                    && elem.equals(actualSequenceElement - 1)) {
+                text.setFill(Color.ORANGERED);
             } else {
                 text.setFill(Color.BLACK);
             }

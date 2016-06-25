@@ -79,6 +79,7 @@ class LeapListener extends Listener {
                         System.exit(0);
                     } else {
                         sequenceCount++;
+                        elementIteratorProperty.setValue(null);
                         elementIteratorProperty.setValue(sequence[sequenceCount]);
                     }
                 }
