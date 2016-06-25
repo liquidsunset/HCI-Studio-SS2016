@@ -103,7 +103,7 @@ class LeapListener extends Listener {
                     indexFingerElement.setValue(getElementFromIndexFingerAngel(indexFinger.direction()));
 
                     for (Gesture gesture : frame.gestures()) {
-                        if (Gesture.Type.TYPE_SCREEN_TAP.equals(gesture.type())) {
+                        if (Gesture.Type.TYPE_SCREEN_TAP.equals(gesture.type()) && !editMode.getValue()) {
                             toggleEditMode();
                             delayTime = System.currentTimeMillis();
                             screenTapGestureProperty.setValue(new ScreenTapGesture(gesture));

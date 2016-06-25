@@ -16,8 +16,7 @@ import java.util.concurrent.TimeUnit;
 final class FileHandlingFunctions {
 
     static boolean createSequence(int size, boolean overwrite) {
-        File file = new File(LeapFXConstant.FILE_SEQUENCE_NAME +
-                LeapFXConstant.COUNT_ELEMENTS + ".txt");
+        File file = new File(LeapFXConstant.FILE_SEQUENCE_NAME);
         if (file.exists() && !overwrite) {
             return false;
         }
@@ -46,8 +45,7 @@ final class FileHandlingFunctions {
 
     static Integer[] getSequence() {
         Integer[] sequenceNumbers;
-        try (Scanner scanner = new Scanner(new File(LeapFXConstant.FILE_SEQUENCE_NAME +
-                LeapFXConstant.COUNT_ELEMENTS + ".txt"))) {
+        try (Scanner scanner = new Scanner(new File(LeapFXConstant.FILE_SEQUENCE_NAME))) {
             String[] sequence = scanner.next().split(",");
             sequenceNumbers = new Integer[sequence.length];
             for (int i = 0; i < sequence.length; i++) {
@@ -100,6 +98,7 @@ final class FileHandlingFunctions {
             buffer.append(" at angel: ").append(angelsTouched[i]).append(systemLineSeparator);
             buffer.append("Defined element angels: ").append(Arrays.toString(
                     getElementAngels(sequence[i]))).append(systemLineSeparator);
+            buffer.append(systemLineSeparator);
         }
 
         return saveFile(fileToSave, buffer);
