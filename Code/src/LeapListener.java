@@ -13,7 +13,6 @@ class LeapListener extends Listener {
     private ObjectProperty<Integer> indexFingerElement = new SimpleObjectProperty<>();
     private ObjectProperty<Boolean> editMode = new SimpleObjectProperty<>();
     private ObjectProperty<ScreenTapGesture> screenTapGestureProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<Boolean> resetAllProperty = new SimpleObjectProperty<>();
     private ObjectProperty<Integer> elementIteratorProperty = new SimpleObjectProperty<>();
 
     ObservableValue<Integer> indexFingerElementProperty() {
@@ -26,10 +25,6 @@ class LeapListener extends Listener {
 
     ObservableValue<ScreenTapGesture> screenTapGestureValue() {
         return screenTapGestureProperty;
-    }
-
-    ObservableValue<Boolean> resetAllValues() {
-        return resetAllProperty;
     }
 
     ObservableValue<Integer> elementIteratorValue() {
@@ -51,7 +46,6 @@ class LeapListener extends Listener {
     public void onConnect(Controller controller) {
         super.onConnect(controller);
         editMode.setValue(false);
-        resetAllProperty.setValue(false);
         sequenceCount = 0;
     }
 
@@ -102,8 +96,6 @@ class LeapListener extends Listener {
             if (!frame.hands().isEmpty()) {
                 shouldReset = true;
                 Hand hand = frame.hands().rightmost();
-
-                resetAllProperty.setValue(false);
 
                 if (hand.isValid()) {
 

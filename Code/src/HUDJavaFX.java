@@ -124,17 +124,6 @@ public class HUDJavaFX extends Application {
             });
         });
 
-        listener.resetAllValues().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                if (newValue) {
-                    highlightedElement = null;
-                    for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
-                        resetElement(i);
-                    }
-                }
-            });
-        });
-
         listener.elementIteratorValue().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 setSequenceText(newValue);
