@@ -129,7 +129,7 @@ public class HUDJavaFX extends Application {
                 if (newValue != null) {
                     setSequenceText(newValue);
                     actualSequenceElement = newValue;
-                    System.out.println("iterator fired");
+                    resetAllElements();
                 }
             });
         });
@@ -207,7 +207,7 @@ public class HUDJavaFX extends Application {
         }
     }
 
-    static void resetElement(Integer elem) {
+    private static void resetElement(Integer elem) {
         if (elem != null && elem < LeapFXConstant.COUNT_ELEMENTS) {
             Rectangle rec = rectangles[elem];
             rec.setFill(Color.WHITE);
@@ -218,6 +218,12 @@ public class HUDJavaFX extends Application {
             } else {
                 text.setFill(Color.BLACK);
             }
+        }
+    }
+
+    static void resetAllElements() {
+        for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
+            resetElement(i);
         }
     }
 

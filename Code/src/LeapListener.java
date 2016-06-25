@@ -85,7 +85,6 @@ class LeapListener extends Listener {
                 }
 
                 toggleEditMode();
-                resetAllElements();
                 int saveLastValue = indexFingerElement.getValue();
                 indexFingerElement.setValue(null);
                 indexFingerElement.setValue(saveLastValue);
@@ -120,17 +119,11 @@ class LeapListener extends Listener {
             } else {
                 if (!editMode.getValue()) {
                     if (shouldReset) {
-                        resetAllElements();
+                        HUDJavaFX.resetAllElements();
                         shouldReset = false;
                     }
                 }
             }
-        }
-    }
-
-    private void resetAllElements() {
-        for (int i = 0; i < LeapFXConstant.COUNT_ELEMENTS; i++) {
-            HUDJavaFX.resetElement(i);
         }
     }
 
