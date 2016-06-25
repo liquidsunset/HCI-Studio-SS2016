@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -91,6 +92,8 @@ final class FileHandlingFunctions {
         buffer.append(TimeUnit.MILLISECONDS.toSeconds(time)).append("seconds")
                 .append(systemLineSeparator).append(systemLineSeparator);
 
+        int touchedWrong = 0;
+
         for (int i = 0; i < sequence.length; i++) {
             buffer.append("User should have touched element: ").append(sequence[i]);
             buffer.append(systemLineSeparator);
@@ -98,8 +101,19 @@ final class FileHandlingFunctions {
             buffer.append(" at angel: ").append(angelsTouched[i]).append(systemLineSeparator);
             buffer.append("Defined element angels: ").append(Arrays.toString(
                     getElementAngels(sequence[i]))).append(systemLineSeparator);
-            buffer.append(systemLineSeparator);
+
+            if (!sequence[i].equals(elementTouched[i])) {
+                touchedWrong++;
+            }
+
         }
+
+        BigDecimal angle = new BigDecimal((double) touchedWrong /
+                (double) sequence.length);
+        buffer.append(systemLineSeparator);
+        buffer.append("Error rate in %: ");
+        buffer.append(angle.setScale(LeapFXConstant.DOUBLE_ROUND_DECIMAL,
+                BigDecimal.ROUND_HALF_UP).doubleValue() * 100);
 
         return saveFile(fileToSave, buffer);
     }
