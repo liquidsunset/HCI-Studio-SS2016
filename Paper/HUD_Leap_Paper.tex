@@ -143,7 +143,16 @@ interface with the right hand, more specificly the right pointing finger, only. 
 allows a slightly bigger movement range of the finger to the left instead of the right. This needed some testing, and we came to
 the conclusion that the angles have to be ajusted within the program in order to achieve a satisfying control of the HUD.
 
-\balance{} 
+\section{Test setup}
+Each test person needs to complete two test sessions. The difference between this sessions are the amount of elements in our HUD. After some pre-tests, we now only include test sessions with three and four elements. Using five elements did not lead to pleasant results since selecting one out of five elements was way too difficult.  \linebreak
+
+Each session consists of 20 steps. In each step, the program marks a random element by coloring the number purble. The user should now try and select the marked element by moving the pointing finger accordingly (left or right). If the desired element is marked, the user can then select it by moving the pointing finger slightly forward. After successfully (or not) selecting an element, the test sequence is continued with the next element. \linebreak
+
+The result of each step is recorded and (after completing the sequence) summarized in a log file. The logfile provides detailed test results in order to validate our prototype. The first few lines give a summary about basic settings and results such as implemented angles, test sequence, touched elements in the test sequence and the duration of the whole test. The second bigger a part of the log file gives an exact result about which angle was hit after each step (with respect of the angle window of the element).
+
+
+\section{Test results}
+tbd
 
 \bibliographystyle{SIGCHI-Reference-Format}
 \bibliography{sample}
