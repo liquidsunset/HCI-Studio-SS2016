@@ -93,7 +93,7 @@ final class FileHandlingFunctions {
                 .append(systemLineSeparator).append(systemLineSeparator);
 
         int touchedWrong = 0;
-
+        //Todo: Einbauen der Zeit zwischen den einzelnen Elementen, Sequence wshl auf 20. Zeit auf 2-3 Sekunden zwischen den Elementen
         for (int i = 0; i < sequence.length; i++) {
             buffer.append("User should have touched element: ").append(sequence[i]);
             buffer.append(systemLineSeparator);
