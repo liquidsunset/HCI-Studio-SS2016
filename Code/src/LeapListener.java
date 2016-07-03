@@ -40,6 +40,7 @@ class LeapListener extends Listener {
 
     private static final Integer[] elementsTouched = new Integer[LeapFXConstant.SEQUENCE_LENGTH];
     private static final double[] angelsTouched = new double[LeapFXConstant.SEQUENCE_LENGTH];
+    private static final long[] timePerElement = new long[LeapFXConstant.SEQUENCE_LENGTH];
     private static final Integer[] sequence = HUDJavaFX.getSequence();
 
     @Override
@@ -72,12 +73,19 @@ class LeapListener extends Listener {
                 if (!LeapFXConstant.FREE_MODE) {
                     if (sequenceCount == LeapFXConstant.SEQUENCE_LENGTH - 1) {
                         try {
+                            setElementTime();
                             saveData(System.currentTimeMillis() - startTime);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         System.exit(0);
                     } else {
+                        if (sequenceCount == 0) {
+                            timePerElement[sequenceCount] = System.currentTimeMillis() - startTime
+                                    - LeapFXConstant.TIME_OUT_IN_MS;
+                        } else {
+                            setElementTime();
+                        }
                         sequenceCount++;
                         elementIteratorProperty.setValue(null);
                         elementIteratorProperty.setValue(sequence[sequenceCount]);
@@ -87,7 +95,9 @@ class LeapListener extends Listener {
                 toggleEditMode();
                 int saveLastValue = indexFingerElement.getValue();
                 indexFingerElement.setValue(null);
-                indexFingerElement.setValue(saveLastValue);
+                if (!frame.hands().isEmpty()) {
+                    indexFingerElement.setValue(saveLastValue);
+                }
             }
         }
 
@@ -141,10 +151,18 @@ class LeapListener extends Listener {
 
     private synchronized void saveData(long time) throws Exception {
         if (FileHandlingFunctions.saveUserLog(LeapCalcFunctions.getDefinedAngels(),
-                sequence, elementsTouched, angelsTouched, time)) {
+                sequence, elementsTouched, angelsTouched, timePerElement, time)) {
             System.out.println("Data saved");
         } else {
             System.out.println("Error at saving the data");
         }
+    }
+
+    private void setElementTime() {
+        long tempTime = System.currentTimeMillis() - startTime;
+        for (int i = 0; i < sequenceCount; i++) {
+            tempTime = tempTime - timePerElement[i] - LeapFXConstant.TIME_OUT_IN_MS;
+        }
+        timePerElement[sequenceCount] = tempTime - LeapFXConstant.TIME_OUT_IN_MS;
     }
 }

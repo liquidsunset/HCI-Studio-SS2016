@@ -60,7 +60,7 @@ final class FileHandlingFunctions {
     }
 
     static boolean saveUserLog(double[] angels, Integer[] sequence, Integer[] elementTouched,
-                               double[] angelsTouched, long time) {
+                               double[] angelsTouched, long[] timePerElement, long time) {
 
         File alreadyCreatedLogs = new File(".");
         FilenameFilter filter = (dir, name) -> name.contains(LeapFXConstant.LOG_NAME);
@@ -89,16 +89,21 @@ final class FileHandlingFunctions {
         buffer.append("Duration: ");
         buffer.append(TimeUnit.MILLISECONDS.toMinutes(time)).append(" minutes ")
                 .append("and ");
-        buffer.append(TimeUnit.MILLISECONDS.toSeconds(time)).append("seconds")
-                .append(systemLineSeparator).append(systemLineSeparator);
+        buffer.append(TimeUnit.MILLISECONDS.toSeconds(time)).append(" seconds")
+                .append(systemLineSeparator);
+        buffer.append("Pause between elements: ").append(LeapFXConstant.TIME_OUT_IN_MS)
+                .append(" ms").append(systemLineSeparator).append(systemLineSeparator);
 
         int touchedWrong = 0;
-        //Todo: Einbauen der Zeit zwischen den einzelnen Elementen, Sequence wshl auf 20. Zeit auf 2-3 Sekunden zwischen den Elementen
+
         for (int i = 0; i < sequence.length; i++) {
             buffer.append("User should have touched element: ").append(sequence[i]);
             buffer.append(systemLineSeparator);
             buffer.append("User touched element: ").append(elementTouched[i]);
             buffer.append(" at angel: ").append(angelsTouched[i]).append(systemLineSeparator);
+            buffer.append("Time between elements: ");
+            buffer.append(TimeUnit.MILLISECONDS.toMillis(timePerElement[i]))
+                    .append(" ms").append(systemLineSeparator);
             buffer.append("Defined element angels: ").append(Arrays.toString(
                     getElementAngels(sequence[i]))).append(systemLineSeparator);
 
