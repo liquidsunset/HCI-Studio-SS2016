@@ -39,7 +39,7 @@ public class HUDJavaFX extends Application {
     public static void main(String[] args) {
 
         boolean createSequence;
-        if (args.length > 0) {
+        if (!LeapFXConstant.USE_DEFINED_SEQUENCE && args.length > 0) {
             try {
                 createSequence = Boolean.parseBoolean(args[0]);
             } catch (Exception e) {

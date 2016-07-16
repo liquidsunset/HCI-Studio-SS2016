@@ -58,7 +58,7 @@ class LeapListener extends Listener {
 
         if (!start) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

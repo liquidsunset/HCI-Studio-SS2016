@@ -46,14 +46,23 @@ final class FileHandlingFunctions {
 
     static Integer[] getSequence() {
         Integer[] sequenceNumbers;
-        try (Scanner scanner = new Scanner(new File(LeapFXConstant.FILE_SEQUENCE_NAME))) {
-            String[] sequence = scanner.next().split(",");
-            sequenceNumbers = new Integer[sequence.length];
-            for (int i = 0; i < sequence.length; i++) {
-                sequenceNumbers[i] = Integer.parseInt(sequence[i]);
+
+        if (!LeapFXConstant.USE_DEFINED_SEQUENCE) {
+            try (Scanner scanner = new Scanner(new File(LeapFXConstant.FILE_SEQUENCE_NAME))) {
+                String[] sequence = scanner.next().split(",");
+                sequenceNumbers = new Integer[sequence.length];
+                for (int i = 0; i < sequence.length; i++) {
+                    sequenceNumbers[i] = Integer.parseInt(sequence[i]);
+                }
+            } catch (IOException e) {
+                return null;
             }
-        } catch (IOException e) {
-            return null;
+        } else {
+            if (LeapFXConstant.COUNT_ELEMENTS == 3) {
+                sequenceNumbers = LeapFXConstant.SEQUENCE_THREE_ELEMENTS;
+            } else {
+                sequenceNumbers = LeapFXConstant.SEQUENCE_FOUR_ELEMENTS;
+            }
         }
 
         return sequenceNumbers;
@@ -89,7 +98,7 @@ final class FileHandlingFunctions {
         buffer.append("Duration: ");
         buffer.append(TimeUnit.MILLISECONDS.toMinutes(time)).append(" minutes ")
                 .append("and ");
-        buffer.append(TimeUnit.MILLISECONDS.toSeconds(time)).append(" seconds")
+        buffer.append(TimeUnit.MILLISECONDS.toSeconds(time) % 60).append(" seconds")
                 .append(systemLineSeparator);
         buffer.append("Pause between elements: ").append(LeapFXConstant.TIME_OUT_IN_MS)
                 .append(" ms").append(systemLineSeparator).append(systemLineSeparator);
