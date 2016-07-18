@@ -114,7 +114,8 @@ final class FileHandlingFunctions {
             buffer.append(TimeUnit.MILLISECONDS.toMillis(timePerElement[i]))
                     .append(" ms").append(systemLineSeparator);
             buffer.append("Defined element angels: ").append(Arrays.toString(
-                    getElementAngels(sequence[i]))).append(systemLineSeparator);
+                    getElementAngels(sequence[i]))).append(systemLineSeparator).append(
+                    systemLineSeparator);
 
             if (!sequence[i].equals(elementTouched[i])) {
                 touchedWrong++;

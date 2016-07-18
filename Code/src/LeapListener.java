@@ -57,11 +57,15 @@ class LeapListener extends Listener {
         Frame frame = controller.frame();
 
         if (!start) {
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+            if (!LeapFXConstant.FREE_MODE) {
+                try {
+                    Thread.sleep(20000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
             start = true;
             startTime = System.currentTimeMillis();
             elementIteratorProperty.setValue(sequence[sequenceCount]);
