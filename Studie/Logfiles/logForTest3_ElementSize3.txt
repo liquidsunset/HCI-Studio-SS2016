@@ -1,0 +1,84 @@
+Used Angels: [180.0, 100.0, 80.0, 0.0]
+Element Sequence: [3, 1, 2, 2, 3, 1, 2, 3, 3, 1, 2, 1, 3, 1, 1]
+Elements touched: [3, 1, 3, 2, 3, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1]
+Angels touched: [74.56, 102.8, 68.87, 91.39, 77.26, 109.03, 88.35, 88.33, 80.13, 105.95, 89.39, 95.7, 106.59, 115.37, 100.99]
+Duration: 1 minutes and 55 seconds
+Pause between elements: 3500 ms
+
+User should have touched element: 3
+User touched element: 3 at angel: 74.56
+Time between elements: 3573 ms
+Defined element angels: [80.0, 0.0]
+
+User should have touched element: 1
+User touched element: 1 at angel: 102.8
+Time between elements: 2253 ms
+Defined element angels: [180.0, 100.0]
+
+User should have touched element: 2
+User touched element: 3 at angel: 68.87
+Time between elements: 6279 ms
+Defined element angels: [100.0, 80.0]
+
+User should have touched element: 2
+User touched element: 2 at angel: 91.39
+Time between elements: 1494 ms
+Defined element angels: [100.0, 80.0]
+
+User should have touched element: 3
+User touched element: 3 at angel: 77.26
+Time between elements: 2790 ms
+Defined element angels: [80.0, 0.0]
+
+User should have touched element: 1
+User touched element: 1 at angel: 109.03
+Time between elements: 1897 ms
+Defined element angels: [180.0, 100.0]
+
+User should have touched element: 2
+User touched element: 2 at angel: 88.35
+Time between elements: 10953 ms
+Defined element angels: [100.0, 80.0]
+
+User should have touched element: 3
+User touched element: 2 at angel: 88.33
+Time between elements: 2412 ms
+Defined element angels: [80.0, 0.0]
+
+User should have touched element: 3
+User touched element: 2 at angel: 80.13
+Time between elements: 6019 ms
+Defined element angels: [80.0, 0.0]
+
+User should have touched element: 1
+User touched element: 1 at angel: 105.95
+Time between elements: 2968 ms
+Defined element angels: [180.0, 100.0]
+
+User should have touched element: 2
+User touched element: 2 at angel: 89.39
+Time between elements: 3041 ms
+Defined element angels: [100.0, 80.0]
+
+User should have touched element: 1
+User touched element: 2 at angel: 95.7
+Time between elements: 2036 ms
+Defined element angels: [180.0, 100.0]
+
+User should have touched element: 3
+User touched element: 1 at angel: 106.59
+Time between elements: 1183 ms
+Defined element angels: [80.0, 0.0]
+
+User should have touched element: 1
+User touched element: 1 at angel: 115.37
+Time between elements: 2694 ms
+Defined element angels: [180.0, 100.0]
+
+User should have touched element: 1
+User touched element: 1 at angel: 100.99
+Time between elements: 13206 ms
+Defined element angels: [180.0, 100.0]
+
+
+Error rate in %: 33.33
