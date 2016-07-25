@@ -143,7 +143,7 @@ allows a slightly bigger movement range of the finger to the left instead of the
 the conclusion that the angles have to be ajusted within the program in order to achieve a satisfying control of the HUD.
 
 \section{Test setup}
-Our test setup was built up in the driving simulator of the HCI-Center in Salzburg. A small netbook running eclipse executes the program. The Leap Motion which is plugged into this netbook is placed right behind the steering wheel. It has to be mentioned that we did not use a standard sized steering wheel. Instead, we used a more flattened steering wheel which is quite similar of modern (self driving) cars such as Tesla. Using a standard steering wheel might not lead to similar pleasant results.
+Our test setup was built up in the driving simulator of the HCI-Center in Salzburg. A small netbook running eclipse executes the program. The Leap Motion which is plugged into this netbook is placed right behind the steering wheel. It has to be mentioned that we did not use a standard sized steering wheel. Instead, we used a more flattened steering wheel which is quite similar to steering wheels of modern (self driving) cars such as Tesla.
 
 Each test person needs to complete two test sessions. The difference between this sessions are the amount of elements in our HUD. After some pre-tests, we now only include test sessions with three and four elements. Using five elements did not lead to pleasant results since selecting one out of five elements was way too difficult.
 
@@ -155,8 +155,34 @@ Throughout the whole test, the user also has to keep driving with the driving si
 
 The result of each step is recorded and (after completing the sequence) summarized in a log file. The logfile provides detailed test results in order to validate our prototype. The first few lines give a summary about basic settings and results such as implemented angles, test sequence, touched elements in the test sequence and the duration of the whole test. The second bigger a part of the log file gives an exact result about which angle was hit after each step (with respect of the angle window of the element). Also an error rate over all selected (or missed) elements is written into the logfile.
 
-
 \section{Test results}
+The test session was performed by ten participants.  Each participant could practise driving the simulator while selecting some elements in our HUD. It was obvious that each test person got familiar with the control faster than expected. This showed that our chosen gestures seem to be very intuitive and useful for the majority of people.
+
+The test session with 3 selectable elements was the succuessful one. After evaluating all test results, we saw that the error rate was lower in this case. The reason is simple: the HUD is configured to track angles between 0 and 180 degrees independent from the amount of elements to be selected. This means that this range only needs to be split into 3 intervals (instead of 4). Another thing that has to be considered is the time that was needed to perform the test. Again, the test session with 3 elements seems to be more successful. The average time that was needed is significantly lower compared to the test with 4 elements.
+
+The average test results can be seen in table 1.
+\begin{table}
+\begin{tabular}{|l|l|l|}
+\hline
+  & \textbf{HUD with 3 elements} & \textbf{HUD with 4 elements} \\
+\hline
+\textbf{Avg. time} & \textit{109 seconds} & \textit{199 seconds} \\
+\hline
+\textbf{Avg. error rate} & \textit{18,1 \%} & \textit{24,8 \%} \\
+\hline
+\end{tabular}
+\caption{Test results with 3 and 4 elements}
+\end{table}
+
+
+\section{Conclusion}
+Our approach provides an interesting and new way of interaction between the car and it's driver. 
+
+The main goal of our prototype was to figure out which system settings are the best for a comfortable control of a HUD. In our opinion, we came to a satisfying result regarding this goal. When it comes to the angle intervals, one has to mention that they might differ from car to car as they depend on the location of the Leap Motion. Regarding gestures, we tried to find a set of those that are recognized by the Leap Motion in a satisfying rate.
+
+However, there is still some room for improvements such as different gestures. Furthermore, more functionalities can be added in case of future studies on this topic.
+
+\section{References}
 tbd
 
 \bibliographystyle{SIGCHI-Reference-Format}
