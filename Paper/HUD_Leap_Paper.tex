@@ -158,9 +158,8 @@ The result of each step is recorded and (after completing the sequence) summariz
 \section{Test results}
 The test session was performed by ten participants.  Each participant could practice driving the simulator while selecting some elements in our HUD. It was obvious that each test person got familiar with the control faster than expected. This showed that our chosen gestures seem to be very intuitive and useful for the majority of people.
 
-The test session with 3 selectable elements gives us better results. After evaluating all test results, we saw that the error rate was lower in this case. The reason is simple: the HUD is configured to track angles between 0 and 180 degrees independent from the amount of elements to be selected. This means that this range only needs to be split into 3 intervals (instead of 4). Another thing that has to be considered is the time that was needed to perform the test. Again, the test session with 3 elements seems to be more successful. The average time that was needed is significantly lower compared to the test with 4 elements.
+The test session with 3 selectable elements gives us better results (see table 1). After evaluating all test results, we saw that the error rate was lower in this case. The reason is simple: the HUD is configured to track angles between 0 and 180 degrees independent from the amount of elements to be selected. This means that this range only needs to be split into 3 intervals (instead of 4). Another thing that has to be considered is the time that was needed to perform the test. Again, the test session with 3 elements seems to be more successful. The average time that was needed is significantly lower compared to the test with 4 elements. 
 
-The average test results can be seen in table 1.
 \begin{table}
 \begin{tabular}{|l|l|l|}
 \hline
@@ -174,6 +173,35 @@ The average test results can be seen in table 1.
 \caption{Test results with 3 and 4 elements}
 \end{table}
 
+Some other interesting results are summarized in table 2 and table 3. It is obvious that the average hit points on 4 elements are rather close to the interval borders compared to the results with 3 elements. Combined with the error rates in table 1, we can (again) conclude that selecting one of 4 elements is more difficult than selecting one of 3. Again, this was the reason why we excluded the test session with 5 elements as we did not see any chance for a satisfying success in this case.
+
+After talking to the participants and evaluating the short questionnaire we created for this purpose, we can summarize that our system seems to be rather intuitive to use and has potential to be used in the future. However, it was also mentioned that the system may distract the driver too much. Therefore, further and more detailed tests might have to be made to fix this thesis. Maybe changes to the system would have to be considered as well, but this is not part of our work.
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+  & \textbf{Element 1} & \textbf{Element 2} & \textbf{Element 3} \\
+\hline
+\textbf{Angle interval} & \textit{180$^\circ$ - 100$^\circ$} & \textit{100$^\circ$ - 80$^\circ$} & \textit{80$^\circ$ - 0$^\circ$} \\
+\hline
+\textbf{Avg. hit point} & \textit{110,43$^\circ$} & \textit{92,54$^\circ$} & \textit{75,63$^\circ$} \\
+\hline
+\end{tabular}
+\caption{Hit points when using 3 elements}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+  & \textbf{Element 1} & \textbf{Element 2} & \textbf{Element 3} & \textbf{Element 4} \\
+\hline
+\textbf{Angle interval} & \textit{180$^\circ$ - 100$^\circ$} & \textit{100$^\circ$ - 95$^\circ$} & \textit{95$^\circ$ - 85$^\circ$} & \textit{85$^\circ$ - 0$^\circ$} \\
+\hline
+\textbf{Avg. hit point} & \textit{108,97$^\circ$} & \textit{97,29$^\circ$} & \textit{88,91$^\circ$} & \textit{78,67$^\circ$} \\
+\hline
+\end{tabular}
+\caption{Hit points when using 4 elements}
+\end{table}
 
 \section{Conclusion}
 Our approach provides an interesting and new way of interaction between the car and its driver. 
