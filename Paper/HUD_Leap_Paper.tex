@@ -129,6 +129,14 @@ The detection of the hand works with an infrared camera which has the advantage 
 is reduced. The sensor recognizes each finger including
 bones and joints. So far, our system has been configured to work with a right hand only.
 
+\FloatBarrier
+
+\begin{figure}
+\centering
+  \includegraphics[width=0.9\columnwidth]{figures/hudelements.jpg}
+  \caption{Simulated HUD with 3 elements. User is pointing at element 3.}~\label{fig:figure1}
+\end{figure}
+
 Our HUD will be simulated with the the JavaFX framework. In order to test which settings fit the most for this use,
 we are able to dynamically display 3 or 4 elements in our HUD, simply represented with numbers between 1 and 3 (respectively 4).
 Certain gestures above the Leap Motion will cause an interaction with the JavaFX window.
@@ -144,6 +152,14 @@ right side.
 
 \section{Test setup}
 Our test setup was built up in the driving simulator of the HCI-Center in Salzburg. A small netbook running eclipse executes the program and simulates our HUD. The Leap Motion which is plugged into this netbook is placed right behind the steering wheel. It has to be mentioned that we did not use a standard sized steering wheel. Instead, we used a more flattened steering wheel which is quite similar to steering wheels of modern (self driving) cars such as Tesla.
+
+\FloatBarrier
+
+\begin{figure}
+\centering
+  \includegraphics[width=0.9\columnwidth]{figures/testsetup.jpg}
+  \caption{Test setup during the case studies with the driving simulator. }~\label{fig:figure1}
+\end{figure}
 
 Each test person needs to complete two test sessions. The difference between this sessions is the amount of elements in our HUD. After some pre-tests, we now only include test sessions with three and four elements. Using five elements did not lead to pleasant results since selecting one out of five elements was way too difficult.
 
